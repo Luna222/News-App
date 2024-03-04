@@ -32,7 +32,6 @@ class App {
     //hashing password
     hashPassword(dataInput.pwd)
       .then(hashedPWD => {
-        console.log(hashedPWD);
         dataInput.pwd = hashedPWD;
 
         this.#userArr.push(
@@ -80,11 +79,12 @@ class App {
     //check browser support for localStorage/sessionStorage
     if (this._isSupported()) {
       //parse the stored value back into its original *Class Instance form (instead of regular JS Object)
-      let data = JSON.parse(localStorage.getItem(key)) ?? defaultVal;
-
-      if (Array.isArray(data)) data = data.map(user => parseUser(user));
-      else data = defaultVal;
-
+      const data =
+        JSON.parse(localStorage.getItem(key))?.map(user => {
+          console.log(user.firstName);
+          console.log(user.lastName);
+          parseUser(user);
+        }) ?? defaultVal;
       this.#userArr = data;
     } else console.log('Sorry! No Web Storage support..');
   }

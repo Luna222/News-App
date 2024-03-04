@@ -10,43 +10,27 @@ const inputPWD = document.querySelector('#input-password');
 const inputPWDConfirm = document.querySelector('#input-password-confirm');
 const btnRegister = document.querySelector('#btn-submit');
 
-const saltRounds = 10;
-
 /*******************************************************************************
  * Functions
  ******************************************************************************/
 /**
- * @brief hashing user's password input
- * use bcrypt for password hashing
+ * @brief Function to hash password using SHA-256
  *
  * @param {String} pwd
  *
- * @returns {String}
+ * @returns {Promise}
  */
 const hashPassword = async function (pwd) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(pwd);
   try {
-    const salt = await bcrypt.genSalt(saltRounds);
-    const hashedPassword = await bcrypt.hash(pwd, salt);
-    return hashedPassword;
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    const hexString = Array.from(new Uint8Array(hash))
+      .map(byte => byte.toString(16).padStart(2, '0'))
+      .join('');
+    return hexString;
   } catch (error) {
     throw new Error('Password hashing failed');
-  }
-};
-
-/**
- * @brief compare original password input with hashed password
- *
- * @param {String} pwd
- * @param {String} hashedPWD
- *
- * @returns {Boolean}
- */
-const verifyPassword = async function (pwd, hashedPWD) {
-  try {
-    const isMatch = await bcrypt.compare(pwd, hashedPWD);
-    return isMatch;
-  } catch (error) {
-    throw new Error('Password verification failed');
   }
 };
 
