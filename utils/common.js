@@ -34,6 +34,27 @@ const hashPassword = async function (pwd) {
   }
 };
 
+/**
+ * @brief Function to compare entered password with hashed password
+ *
+ * @param {String} enteredPwd
+ * @param {String} hashedPwd
+ *
+ * @returns {Boolean}
+ */
+const comparePassword = async function (enteredPwd, hashedPwd) {
+  const encoder = new TextEncoder();
+  const enteredData = encoder.encode(enteredPwd);
+  const enteredHash = await crypto.subtle.digest('SHA-256', enteredData);
+
+  const hashedData = Array.from(
+    new Uint8Array(hashedPwd.match(/.{2}/g).map(byte => parseInt(byte, 16)))
+  );
+
+  // Compare the entered hash and the hashed password
+  return enteredHash.every((byte, idx) => byte === hashedData[idx]);
+};
+
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/

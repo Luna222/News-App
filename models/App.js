@@ -43,7 +43,6 @@ class App {
           )
         );
 
-        console.log(this.#userArr);
         this._setLocalStorage(this.#KEY_USER); //set local storage to the newly created User
         alert(
           'Registered successfully! 🎉. Please go to Login page to proceed.'
