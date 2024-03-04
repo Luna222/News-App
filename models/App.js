@@ -49,9 +49,9 @@ class App {
           'Registered successfully! 🎉. Please go to Login page to proceed.'
         );
 
-        // setTimeout(function () {
-        //   window.location.href = '../pages/login.html';
-        // }, 3000);
+        setTimeout(function () {
+          window.location.href = '../pages/login.html';
+        }, 1500);
       })
       .catch(err => console.error(err));
   }
