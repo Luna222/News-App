@@ -68,23 +68,14 @@ class App {
   }
 
   _getLocalStorage(key, defaultVal = 'N/A') {
-    const parseUser = userData =>
-      new User(
-        userData.firstname,
-        userData.lastname,
-        userData.username,
-        userData.password
-      );
+    const parseUser = user =>
+      new User(user.firstname, user.lastname, user.username, user.password);
 
     //check browser support for localStorage/sessionStorage
     if (this._isSupported()) {
       //parse the stored value back into its original *Class Instance form (instead of regular JS Object)
       const data =
-        JSON.parse(localStorage.getItem(key))?.map(user => {
-          console.log(user.firstName);
-          console.log(user.lastName);
-          parseUser(user);
-        }) ?? defaultVal;
+        JSON.parse(localStorage.getItem(key))?.map(parseUser) ?? defaultVal;
       this.#userArr = data;
     } else console.log('Sorry! No Web Storage support..');
   }
