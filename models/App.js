@@ -18,7 +18,7 @@ class App {
     //get data inputs from form & store them into object data:
     const dataInput = {
       firstName: inputFirstName.value.trim(),
-      lastname: inputLastName.value.trim(),
+      lastName: inputLastName.value.trim(),
       userName: inputUsername.value.trim(),
       pwd: inputPWD.value.trim(),
       pwdConfirm: inputPWDConfirm.value.trim(),
@@ -37,7 +37,7 @@ class App {
         this.#userArr.push(
           new User(
             dataInput.firstName,
-            dataInput.lastname,
+            dataInput.lastName,
             dataInput.userName,
             dataInput.pwd
           )
@@ -48,12 +48,12 @@ class App {
         alert(
           'Registered successfully! 🎉. Please go to Login page to proceed.'
         );
+
+        // setTimeout(function () {
+        //   window.location.href = '../pages/login.html';
+        // }, 3000);
       })
       .catch(err => console.error(err));
-
-    // setTimeout(function () {
-    //   window.location.href = '../pages/login.html';
-    // }, 3000);
   }
 
   _isSupported() {
@@ -68,8 +68,13 @@ class App {
   }
 
   _getLocalStorage(key, defaultVal = 'N/A') {
-    const parseUser = user =>
-      new User(user.firstname, user.lastname, user.username, user.password);
+    const parseUser = userData =>
+      new User(
+        userData.firstName,
+        userData.lastName,
+        userData.userName,
+        userData.password
+      );
 
     //check browser support for localStorage/sessionStorage
     if (this._isSupported()) {
