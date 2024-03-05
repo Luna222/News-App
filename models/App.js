@@ -71,15 +71,13 @@ class App {
      * @returns {Boolean}
      */
     const validatePassword = function (pwd, pwdConfirm) {
-      const isValid = true;
-
-      if (pwd.length < 8) {
-        alert('Password must be at least 8 characters long!');
-        isValid = false;
-      }
+      let isValid = true;
 
       if (pwd !== pwdConfirm) {
         alert('Passwords do NOT match!');
+        isValid = false;
+      } else if (pwd.length <= 8) {
+        alert('Password must be longer than 8 characters!');
         isValid = false;
       }
       return isValid;
