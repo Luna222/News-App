@@ -42,7 +42,7 @@ const hashPassword = async function (pwd) {
  *
  * @returns {Boolean}
  */
-const comparePassword = async function (enteredPwd, hashedPwd) {
+const matchPasswords = async function (enteredPwd, hashedPwd) {
   const encoder = new TextEncoder();
   const enteredData = encoder.encode(enteredPwd);
   const enteredHash = await crypto.subtle.digest('SHA-256', enteredData);
@@ -54,6 +54,17 @@ const comparePassword = async function (enteredPwd, hashedPwd) {
   // Compare the entered hash and the hashed password
   return enteredHash.every((byte, idx) => byte === hashedData[idx]);
 };
+
+/**
+ * @brief check characters included in the query input
+ * trim both special characters and whitespace from the query string
+ *
+ * @param {String} query
+ *
+ * @returns {String}
+ */
+const trimQuery = query =>
+  query.replace(/[^a-zA-Z0-9]/g, '').replace(/\s/g, '');
 
 /*******************************************************************************
  * Handle Events

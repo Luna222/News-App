@@ -24,35 +24,100 @@ class App {
       pwdConfirm: inputPWDConfirm.value.trim(),
     };
 
-    const validateUser = () => {};
+    /**
+     *
+     * @param {Object} userData - user's data inputs from form
+     *
+     * @returns {Boolean}
+     */
+    const isFilled = function (userData) {
+      let check = true;
+
+      for (const field of Object.keys(userData)) {
+        if (!userData[field]) {
+          alert(`${field} is empty!`);
+          check = false;
+          break;
+        }
+      }
+      return check;
+    };
+
+    /**
+     *
+     * @param {Object} userData - user's data inputs from form
+     *
+     * @returns {Boolean}
+     */
+    const isDup = function (userData) {
+      let check = false;
+
+      if (this.#userArr.find(user => user.userName === userData.userName)) {
+        alert(`This User with {${userData.userName}} Username already exists!`);
+        check = true;
+      }
+      return check;
+    };
+
+    /**
+     *
+     * @param {Object} userData - user's data inputs from form
+     *
+     * @returns {Boolean}
+     */
+    const comparePasswords = function (userData) {
+      const check = true;
+
+      if (userData.pwd.length < 8) {
+        alert('Password must be at least 8 characters long!');
+        check = false;
+      }
+
+      if (userData.pwd !== userData.pwdConfirm) {
+        alert('Passwords do NOT match!');
+        check = false;
+      }
+      return check;
+    };
+
+    /**
+     *
+     * @param {Object} userData - user's data inputs from form
+     *
+     * @returns {Boolean}
+     */
+    const validateUserData = userData =>
+      isFilled(userData) && !isDup.call(this, userData);
 
     //use guard clause
-    // if (!validateUser()) return alert('Invalid User Info! 🙅');
+    // if (!validateUserData()) return alert('Invalid User Info! 🙅');
 
-    //hashing password
-    hashPassword(dataInput.pwd)
-      .then(hashedPWD => {
-        dataInput.pwd = hashedPWD;
+    if (validateUserData(dataInput)) {
+      //hashing password
+      hashPassword(dataInput.pwd)
+        .then(hashedPWD => {
+          dataInput.pwd = hashedPWD;
 
-        this.#userArr.push(
-          new User(
-            dataInput.firstName,
-            dataInput.lastName,
-            dataInput.userName,
-            dataInput.pwd
-          )
-        );
+          this.#userArr.push(
+            new User(
+              dataInput.firstName,
+              dataInput.lastName,
+              dataInput.userName,
+              dataInput.pwd
+            )
+          );
 
-        this._setLocalStorage(this.#KEY_USER); //set local storage to the newly created User
-        alert(
-          'Registered successfully! 🎉. Please go to Login page to proceed.'
-        );
+          this._setLocalStorage(this.#KEY_USER); //set local storage to the newly created User
+          alert(
+            'Registered successfully! 🎉. Please go to Login page to proceed.'
+          );
 
-        setTimeout(function () {
-          window.location.href = '../pages/login.html';
-        }, 1500);
-      })
-      .catch(err => console.error(err));
+          setTimeout(function () {
+            window.location.href = '../pages/login.html';
+          }, 1500);
+        })
+        .catch(err => console.error(err));
+    }
   }
 
   _isSupported() {
