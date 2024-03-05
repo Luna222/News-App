@@ -10,6 +10,7 @@ const inputPWD = document.querySelector('#input-password');
 const inputPWDConfirm = document.querySelector('#input-password-confirm');
 const btnRegister = document.querySelector('#btn-submit');
 const btnLogin = document.querySelector('#btn-submit');
+const btnLogout = document.querySelector('#btn-logout');
 
 const homeLabel = document.querySelector('h2');
 const loginModal = document.querySelector('#login-modal');

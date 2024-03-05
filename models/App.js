@@ -178,6 +178,11 @@ class App {
 
   _logout(e) {
     e.preventDefault();
+    localStorage.removeItem(this.#KEY_CURRENT_USER);
+
+    setTimeout(function () {
+      window.location.href = '../pages/login.html';
+    }, 1000);
   }
 
   /**
@@ -252,7 +257,7 @@ class App {
 
   // Public Methods/Interfaces
   reset() {
-    // localStorage.removeItem(this.#KEY_USER);
+    localStorage.removeItem(this.#KEY_USER);
     localStorage.removeItem(this.#KEY_CURRENT_USER);
   }
 }
