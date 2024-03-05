@@ -14,7 +14,7 @@ const initHome = function () {
   app = new App();
 
   //render home as loading the page
-  mainContent.style.display = 'none';
+  // mainContent.style.display = 'none';
   app._renderMainContent();
 };
 initHome();
