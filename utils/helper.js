@@ -80,6 +80,9 @@ function checkSpecialCharacter(text) {
   return specialCharacterRegex.test(text);
 }
 
+//use guard clause
+// if (!validateUserData()) return alert('Invalid User Info! 🙅');
+
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/

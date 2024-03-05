@@ -94,9 +94,6 @@ class App {
       validateUsername.call(this, userData.userName) &&
       validatePassword(userData.pwd, userData.pwdConfirm);
 
-    //use guard clause
-    // if (!validateUserData()) return alert('Invalid User Info! 🙅');
-
     if (validateUserData(dataInput)) {
       //hashing password
       hashPassword(dataInput.pwd)
