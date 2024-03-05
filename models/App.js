@@ -171,6 +171,10 @@ class App {
     ) {
       this.#isLoggedIn = true;
       this._setLocalStorage(this.#KEY_CURRENT_USER, this.#currentUser);
+
+      setTimeout(function () {
+        window.location.href = '../index.html';
+      }, 1000);
     } else return alert('Invalid User Info! 🙅');
   }
 
