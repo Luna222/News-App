@@ -5,11 +5,14 @@
 class App {
   //Private fields on Instances
   #userArr;
+  #currentUser;
   #KEY_USER = 'USER_ARRAY';
+  #KEY_CURRENT_USER = 'CURRENT_USER';
 
   constructor() {
     //Get data from local storage
-    this._getLocalStorage(this.#KEY_USER, []);
+    this.#userArr = this._getLocalStorage(this.#KEY_USER, []);
+    this.#currentUser = this._getLocalStorage(this.#KEY_CURRENT_USER, {});
   }
 
   _newUser(e) {
@@ -193,18 +196,23 @@ class App {
   _getLocalStorage(key, defaultVal = 'N/A') {
     const parseUser = userData =>
       new User(
-        userData.firstName,
-        userData.lastName,
-        userData.userName,
-        userData.password
+        userData?.firstName,
+        userData?.lastName,
+        userData?.userName,
+        userData?.password
       );
 
     //check browser support for localStorage/sessionStorage
     if (this._isSupported()) {
       //parse the stored value back into its original *Class Instance form (instead of regular JS Object)
-      const data =
-        JSON.parse(localStorage.getItem(key))?.map(parseUser) ?? defaultVal;
-      this.#userArr = data;
+      const dataFromKey = JSON.parse(localStorage.getItem(key));
+
+      const dataFinal = Array.isArray(dataFromKey)
+        ? dataFromKey?.map(parseUser) ?? defaultVal
+        : parseUser(dataFromKey);
+      // const data =
+      //   JSON.parse(localStorage.getItem(key))?.map(parseUser) ?? defaultVal;
+      return dataFinal;
     } else console.log('Sorry! No Web Storage support..');
   }
 
