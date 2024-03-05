@@ -45,39 +45,44 @@ class App {
 
     /**
      *
-     * @param {Object} userData - user's data inputs from form
+     * @param {String} userName - Username input from form
      *
      * @returns {Boolean}
      */
-    const isDup = function (userData) {
-      let check = false;
+    const validateUsername = function (userName) {
+      let isValid = true;
 
-      if (this.#userArr.find(user => user.userName === userData.userName)) {
-        alert(`This User with {${userData.userName}} Username already exists!`);
-        check = true;
+      if (checkSpecialCharacter(userName)) {
+        alert(`Username should NOT contain special characters!`);
+        isValid = false;
       }
-      return check;
+
+      if (this.#userArr.find(user => user.userName === userName)) {
+        alert(`This User with {${userName}} Username already exists!`);
+        isValid = false;
+      }
+      return isValid;
     };
 
     /**
      *
-     * @param {Object} userData - user's data inputs from form
+     * @param {String} pwd - Password input from form
      *
      * @returns {Boolean}
      */
-    const comparePasswords = function (userData) {
-      const check = true;
+    const validatePassword = function (pwd, pwdConfirm) {
+      const isValid = true;
 
-      if (userData.pwd.length < 8) {
+      if (pwd.length < 8) {
         alert('Password must be at least 8 characters long!');
-        check = false;
+        isValid = false;
       }
 
-      if (userData.pwd !== userData.pwdConfirm) {
+      if (pwd !== pwdConfirm) {
         alert('Passwords do NOT match!');
-        check = false;
+        isValid = false;
       }
-      return check;
+      return isValid;
     };
 
     /**
@@ -87,7 +92,9 @@ class App {
      * @returns {Boolean}
      */
     const validateUserData = userData =>
-      isFilled(userData) && !isDup.call(this, userData);
+      isFilled(userData) &&
+      validateUsername.call(this, userData.userName) &&
+      validatePassword(userData.pwd, userData.pwdConfirm);
 
     //use guard clause
     // if (!validateUserData()) return alert('Invalid User Info! 🙅');

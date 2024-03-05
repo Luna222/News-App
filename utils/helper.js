@@ -57,14 +57,28 @@ const matchPasswords = async function (enteredPwd, hashedPwd) {
 
 /**
  * @brief check characters included in the query input
- * trim both special characters and whitespace from the query string
  *
- * @param {String} query
+ * @param {String} data - Pet data
+ * @param {String} query - query input from form
  *
- * @returns {String}
+ * @returns {Boolean} - returns `true` if there is a match, and `false` otherwise
  */
-const trimQuery = query =>
-  query.replace(/[^a-zA-Z0-9]/g, '').replace(/\s/g, '');
+const matchChar = (data, query) => {
+  //trim both special characters and whitespace from the query string
+  const trimmedQuery = query.replace(/[^a-zA-Z0-9]/g, '').replace(/\s/g, '');
+  return data.includes(trimmedQuery);
+};
+
+/**
+ *
+ * @param {String} text
+ *
+ * @returns {Boolean}
+ */
+function checkSpecialCharacter(text) {
+  const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/;
+  return specialCharacterRegex.test(text);
+}
 
 /*******************************************************************************
  * Handle Events
