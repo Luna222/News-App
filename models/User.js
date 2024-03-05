@@ -11,5 +11,11 @@ class User {
     this.lastName = lastName;
     this.userName = userName;
     this.password = password;
+
+    this._setWelcome();
+  }
+
+  _setWelcome() {
+    this.welcome = `Welcome ${this.firstName}! 🌻`;
   }
 }

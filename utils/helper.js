@@ -11,6 +11,9 @@ const inputPWDConfirm = document.querySelector('#input-password-confirm');
 const btnRegister = document.querySelector('#btn-submit');
 const btnLogin = document.querySelector('#btn-submit');
 
+const homeLabel = document.querySelector('h2');
+const loginModal = document.querySelector('#login-modal');
+
 const CHARACTER_LIMIT = 50;
 
 /*******************************************************************************

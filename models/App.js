@@ -8,7 +8,6 @@ class App {
   #currentUser;
   #KEY_USER = 'USER_ARRAY';
   #KEY_CURRENT_USER = 'CURRENT_USER';
-  #isLoggedIn = false;
 
   constructor() {
     //Get data from local storage
@@ -169,7 +168,6 @@ class App {
       this.#currentUser &&
       (await matchPasswords(dataInput.pwd, this.#currentUser.password))
     ) {
-      this.#isLoggedIn = true;
       this._setLocalStorage(this.#KEY_CURRENT_USER, this.#currentUser);
 
       setTimeout(function () {
@@ -230,6 +228,26 @@ class App {
         : parseUser(dataFromKey);
       return dataFinal;
     } else console.log('Sorry! No Web Storage support..');
+  }
+
+  _renderModal() {
+    const createModal = function (msg) {
+      const p = document.createElement('p');
+      p.textContent = msg;
+
+      const modal = document.createElement('div');
+      modal.id = 'home-modal';
+      modal.append(p);
+      return modal;
+    };
+
+    //if User logged in successfully
+    if (Object.keys(localStorage).find(key => key === this.#KEY_CURRENT_USER)) {
+      loginModal.style.display = 'none';
+
+      const homeModal = createModal(this.#currentUser.welcome);
+      homeLabel.insertAdjacentElement('afterend', homeModal);
+    }
   }
 
   // Public Methods/Interfaces
