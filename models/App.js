@@ -26,21 +26,44 @@ class App {
 
     /**
      *
-     * @param {Object} userData - user's data inputs from form
+     * @param {String} firstName - First Name input from form
      *
      * @returns {Boolean}
      */
-    const isFilled = function (userData) {
-      let check = true;
+    const validateFirstName = function (firstName) {
+      let isValid = true;
 
-      for (const field of Object.keys(userData)) {
-        if (!userData[field]) {
-          alert(`${field} is empty!`);
-          check = false;
-          break;
-        }
+      if (checkSpecialCharacter(firstName) || checkNumCharacter(firstName)) {
+        alert(`First Name should NOT contain special characters or numbers!`);
+        isValid = false;
       }
-      return check;
+
+      if (firstName.length > CHARACTER_LIMIT) {
+        alert(`First Name is too long!`);
+        isValid = false;
+      }
+      return isValid;
+    };
+
+    /**
+     *
+     * @param {String} lastName - Last Name input from form
+     *
+     * @returns {Boolean}
+     */
+    const validateLastName = function (lastName) {
+      let isValid = true;
+
+      if (checkSpecialCharacter(lastName) || checkNumCharacter(lastName)) {
+        alert(`Last Name should NOT contain special characters or numbers!`);
+        isValid = false;
+      }
+
+      if (lastName.length > CHARACTER_LIMIT) {
+        alert(`Last Name is too long!`);
+        isValid = false;
+      }
+      return isValid;
     };
 
     /**
@@ -52,13 +75,13 @@ class App {
     const validateUsername = function (userName) {
       let isValid = true;
 
-      if (checkSpecialCharacter(userName)) {
-        alert(`Username should NOT contain special characters!`);
+      if (this.#userArr.find(user => user.userName === userName)) {
+        alert(`This User with {${userName}} Username already exists!`);
         isValid = false;
       }
 
-      if (this.#userArr.find(user => user.userName === userName)) {
-        alert(`This User with {${userName}} Username already exists!`);
+      if (userName.length > CHARACTER_LIMIT) {
+        alert(`User Name is too long!`);
         isValid = false;
       }
       return isValid;
@@ -90,7 +113,9 @@ class App {
      * @returns {Boolean}
      */
     const validateUserData = userData =>
-      isFilled(userData) &&
+      this._isFilled(userData) &&
+      validateFirstName(userData.firstName) &&
+      validateLastName(userData.lastName) &&
       validateUsername.call(this, userData.userName) &&
       validatePassword(userData.pwd, userData.pwdConfirm);
 
@@ -120,6 +145,38 @@ class App {
         })
         .catch(err => console.error(err));
     }
+  }
+
+  _login(e) {
+    e.preventDefault();
+
+    const dataInput = {
+      userName: inputUsername.value.trim(),
+      pwd: inputPWD.value.trim(),
+    };
+  }
+
+  _logout(e) {
+    e.preventDefault();
+  }
+
+  /**
+   *
+   * @param {Object} userData - user's data inputs from form
+   *
+   * @returns {Boolean}
+   */
+  _isFilled(userData) {
+    let check = true;
+
+    for (const field of Object.keys(userData)) {
+      if (!userData[field]) {
+        alert(`${field} is empty!`);
+        check = false;
+        break;
+      }
+    }
+    return check;
   }
 
   _isSupported() {

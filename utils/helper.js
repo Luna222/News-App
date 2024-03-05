@@ -9,6 +9,9 @@ const inputUsername = document.querySelector('#input-username');
 const inputPWD = document.querySelector('#input-password');
 const inputPWDConfirm = document.querySelector('#input-password-confirm');
 const btnRegister = document.querySelector('#btn-submit');
+const btnLogin = document.querySelector('#btn-submit');
+
+const CHARACTER_LIMIT = 50;
 
 /*******************************************************************************
  * Functions
@@ -78,6 +81,17 @@ const matchChar = (data, query) => {
 function checkSpecialCharacter(text) {
   const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/;
   return specialCharacterRegex.test(text);
+}
+
+/**
+ *
+ * @param {String} text
+ *
+ * @returns {Boolean}
+ */
+function checkNumCharacter(text) {
+  const numberRegex = /\d/;
+  return numberRegex.test(text);
 }
 
 //use guard clause
