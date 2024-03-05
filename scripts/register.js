@@ -2,14 +2,22 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-const app = new App();
+let app;
 
 /*******************************************************************************
  * Functions
  ******************************************************************************/
-window.onload = () => {
-  inputPWDConfirm.onpaste = e => e.preventDefault();
+/**
+ * @brief initialize default state
+ */
+const initRegister = function () {
+  app = new App();
+
+  window.onload = () => {
+    inputPWDConfirm.onpaste = e => e.preventDefault();
+  };
 };
+initRegister();
 
 /*******************************************************************************
  * Handle Events

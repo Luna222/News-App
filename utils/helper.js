@@ -14,6 +14,8 @@ const btnLogout = document.querySelector('#btn-logout');
 
 const homeLabel = document.querySelector('h2');
 const loginModal = document.querySelector('#login-modal');
+const mainContent = document.querySelector('#main-content');
+const welcomeMsg = document.querySelector('#welcome-message');
 
 const CHARACTER_LIMIT = 50;
 

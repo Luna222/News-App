@@ -235,23 +235,13 @@ class App {
     } else console.log('Sorry! No Web Storage support..');
   }
 
-  _renderModal() {
-    const createModal = function (msg) {
-      const p = document.createElement('p');
-      p.textContent = msg;
-
-      const modal = document.createElement('div');
-      modal.id = 'home-modal';
-      modal.append(p);
-      return modal;
-    };
-
+  _renderMainContent() {
     //if User logged in successfully
     if (Object.keys(localStorage).find(key => key === this.#KEY_CURRENT_USER)) {
       loginModal.style.display = 'none';
+      mainContent.style.display = 'block';
 
-      const homeModal = createModal(this.#currentUser.welcome);
-      homeLabel.insertAdjacentElement('afterend', homeModal);
+      welcomeMsg.textContent = this.#currentUser.welcome;
     }
   }
 

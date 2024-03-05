@@ -2,13 +2,22 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-const app = new App();
+let app;
 
 /*******************************************************************************
  * Functions
  ******************************************************************************/
-//render home modal as loading the page
-app._renderModal();
+/**
+ * @brief initialize default state
+ */
+const initHome = function () {
+  app = new App();
+
+  //render home as loading the page
+  mainContent.style.display = 'none';
+  app._renderMainContent();
+};
+initHome();
 
 /*******************************************************************************
  * Handle Events
