@@ -161,6 +161,8 @@ class App {
       this.#currentUser = this.#userArr.find(
         user => user.userName === dataInput.userName
       );
+    } else {
+      return;
     }
 
     if (
@@ -230,6 +232,5 @@ class App {
   reset() {
     // localStorage.removeItem(this.#KEY_USER);
     localStorage.removeItem(this.#KEY_CURRENT_USER);
-    location.reload();
   }
 }
