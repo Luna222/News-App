@@ -21,7 +21,7 @@ const CHARACTER_LIMIT = 50;
  *
  * @param {String} pwd
  *
- * @returns {Promise}
+ * @returns {Promise} - {String} PromiseResult
  */
 const hashPassword = async function (pwd) {
   const encoder = new TextEncoder();
@@ -43,19 +43,11 @@ const hashPassword = async function (pwd) {
  * @param {String} enteredPwd
  * @param {String} hashedPwd
  *
- * @returns {Boolean}
+ * @returns {Promise} - {Boolean} PromiseResult
  */
 const matchPasswords = async function (enteredPwd, hashedPwd) {
-  const encoder = new TextEncoder();
-  const enteredData = encoder.encode(enteredPwd);
-  const enteredHash = await crypto.subtle.digest('SHA-256', enteredData);
-
-  const hashedData = Array.from(
-    new Uint8Array(hashedPwd.match(/.{2}/g).map(byte => parseInt(byte, 16)))
-  );
-
-  // Compare the entered hash and the hashed password
-  return enteredHash.every((byte, idx) => byte === hashedData[idx]);
+  const enteredHash = await hashPassword(enteredPwd);
+  return enteredHash === hashedPwd;
 };
 
 /**
@@ -93,9 +85,6 @@ function checkNumCharacter(text) {
   const numberRegex = /\d/;
   return numberRegex.test(text);
 }
-
-//use guard clause
-// if (!validateUserData()) return alert('Invalid User Info! 🙅');
 
 /*******************************************************************************
  * Handle Events

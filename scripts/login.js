@@ -11,4 +11,4 @@ const app = new App();
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/
-btnLogin.addEventListener('click', function () {});
+btnLogin.addEventListener('click', app._login.bind(app));

@@ -8,11 +8,12 @@ class App {
   #currentUser;
   #KEY_USER = 'USER_ARRAY';
   #KEY_CURRENT_USER = 'CURRENT_USER';
+  #isLoggedIn = false;
 
   constructor() {
     //Get data from local storage
     this.#userArr = this._getLocalStorage(this.#KEY_USER, []);
-    this.#currentUser = this._getLocalStorage(this.#KEY_CURRENT_USER, {});
+    this.#currentUser = this._getLocalStorage(this.#KEY_CURRENT_USER);
   }
 
   _newUser(e) {
@@ -122,41 +123,53 @@ class App {
       validateUsername.call(this, userData.userName) &&
       validatePassword(userData.pwd, userData.pwdConfirm);
 
-    if (validateUserData(dataInput)) {
-      //hashing password
-      hashPassword(dataInput.pwd)
-        .then(hashedPWD => {
-          dataInput.pwd = hashedPWD;
-
+    //hashing password
+    hashPassword(dataInput.pwd)
+      .then(hashedPWD => {
+        if (validateUserData(dataInput)) {
           this.#userArr.push(
             new User(
               dataInput.firstName,
               dataInput.lastName,
               dataInput.userName,
-              dataInput.pwd
+              hashedPWD
             )
           );
-
-          this._setLocalStorage(this.#KEY_USER); //set local storage to the newly created User
+          //set local storage to the newly created User
+          this._setLocalStorage(this.#KEY_USER, this.#userArr);
           alert(
             'Registered successfully! 🎉. Please go to Login page to proceed.'
           );
 
           setTimeout(function () {
             window.location.href = '../pages/login.html';
-          }, 1500);
-        })
-        .catch(err => console.error(err));
-    }
+          }, 1000);
+        }
+      })
+      .catch(err => console.error(err));
   }
 
-  _login(e) {
+  async _login(e) {
     e.preventDefault();
 
     const dataInput = {
       userName: inputUsername.value.trim(),
       pwd: inputPWD.value.trim(),
     };
+
+    if (this._isFilled(dataInput)) {
+      this.#currentUser = this.#userArr.find(
+        user => user.userName === dataInput.userName
+      );
+    }
+
+    if (
+      this.#currentUser &&
+      (await matchPasswords(dataInput.pwd, this.#currentUser.password))
+    ) {
+      this.#isLoggedIn = true;
+      this._setLocalStorage(this.#KEY_CURRENT_USER, this.#currentUser);
+    } else return alert('Invalid User Info! 🙅');
   }
 
   _logout(e) {
@@ -186,10 +199,9 @@ class App {
     return typeof Storage !== 'undefined';
   }
 
-  _setLocalStorage(key) {
+  _setLocalStorage(key, value) {
     //check browser support for localStorage/sessionStorage
-    if (this._isSupported())
-      localStorage.setItem(key, JSON.stringify(this.#userArr));
+    if (this._isSupported()) localStorage.setItem(key, JSON.stringify(value));
     else console.log('Sorry! No Web Storage support..');
   }
 
@@ -205,20 +217,19 @@ class App {
     //check browser support for localStorage/sessionStorage
     if (this._isSupported()) {
       //parse the stored value back into its original *Class Instance form (instead of regular JS Object)
-      const dataFromKey = JSON.parse(localStorage.getItem(key));
+      const dataFromKey = JSON.parse(localStorage.getItem(key)) ?? defaultVal;
 
       const dataFinal = Array.isArray(dataFromKey)
-        ? dataFromKey?.map(parseUser) ?? defaultVal
+        ? dataFromKey?.map(parseUser)
         : parseUser(dataFromKey);
-      // const data =
-      //   JSON.parse(localStorage.getItem(key))?.map(parseUser) ?? defaultVal;
       return dataFinal;
     } else console.log('Sorry! No Web Storage support..');
   }
 
   // Public Methods/Interfaces
   reset() {
-    localStorage.removeItem(this.#KEY_USER);
+    // localStorage.removeItem(this.#KEY_USER);
+    localStorage.removeItem(this.#KEY_CURRENT_USER);
     location.reload();
   }
 }
