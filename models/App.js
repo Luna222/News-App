@@ -220,7 +220,7 @@ class App {
   _setLocalStorage(key, value) {
     //check browser support for localStorage/sessionStorage
     if (this._isSupported()) localStorage.setItem(key, JSON.stringify(value));
-    else console.log('Sorry! No Web Storage support..');
+    else throw new Error('Sorry! No Web Storage support..');
   }
 
   _getLocalStorage(key, defaultVal = 'N/A') {
@@ -241,7 +241,7 @@ class App {
         ? dataFromKey?.map(parseUser)
         : parseUser(dataFromKey);
       return dataFinal;
-    } else console.log('Sorry! No Web Storage support..');
+    } else throw new Error('Sorry! No Web Storage support..');
   }
 
   _renderMainContent() {
