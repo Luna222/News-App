@@ -247,11 +247,9 @@ class App {
   _renderMainContent() {
     //if User logged in successfully
     if (this._isLoggedIn()) {
-      loginModal.style.display = 'none';
       mainContent.style.display = 'block';
-
       welcomeMsg.textContent = this.#currentUser.welcome;
-    }
+    } else loginModal.style.display = 'block';
   }
 
   _renderSidebar() {
