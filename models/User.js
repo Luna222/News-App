@@ -18,4 +18,14 @@ class User {
   _setWelcome() {
     this.welcome = `Welcome ${this.firstName}! 🌻`;
   }
+
+  async _getNews() {
+    const countryCode = '',
+      catgegory = '',
+      pageSize = 4,
+      page = 2,
+      API_KEY = 'ea8425be926845e1b88a8f18b3cf65f0';
+
+    const endpointUrlByCountry = `https://newsapi.org/v2/top-headlines?country=${countryCode}&apiKey=${API_KEY}`;
+  }
 }

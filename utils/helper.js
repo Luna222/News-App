@@ -17,6 +17,8 @@ const loginModal = document.querySelector('#login-modal');
 const mainContent = document.querySelector('#main-content');
 const welcomeMsg = document.querySelector('#welcome-message');
 
+const newsContainer = document.querySelector('#news-container');
+
 const CHARACTER_LIMIT = 50;
 
 /*******************************************************************************
