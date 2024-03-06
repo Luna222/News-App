@@ -13,19 +13,49 @@ class User {
     this.password = password;
 
     this._setWelcome();
+
+    //Retrieve data for News page
+    this._getNews();
   }
 
+  //[Private Methods]
   _setWelcome() {
     this.welcome = `Welcome ${this.firstName}! 🌻`;
   }
 
-  async _getNews() {
-    const countryCode = '',
-      catgegory = '',
-      pageSize = 4,
-      page = 2,
-      API_KEY = 'ea8425be926845e1b88a8f18b3cf65f0';
-
-    const endpointUrl = `https://newsapi.org/v2/top-headlines?country=de&category=business&apiKey=ea8425be926845e1b88a8f18b3cf65f0`;
+  _renderError(errMsg) {
+    newsContainer.insertAdjacentText('beforeend', errMsg);
   }
+
+  _renderNews(data) {}
+
+  async _getNews() {
+    try {
+      const countryCode = 'us',
+        catgegory = 'health',
+        pageSize = 10,
+        page = 7,
+        API_KEY = 'ea8425be926845e1b88a8f18b3cf65f0';
+
+      const endpointUrlNews = `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${catgegory}&pageSize=${pageSize}&page=${page}&apiKey=${API_KEY}`;
+
+      const resNews = await fetch(endpointUrlNews);
+
+      if (!resNews.ok)
+        throw new Error(`Problem getting data ❌ (${resNews.status})`);
+
+      const dataNews = await resNews.json();
+      console.log(dataNews);
+      this._renderNews(dataNews);
+    } catch (err) {
+      console.error('Error occurred while fetching data 💥:', err.message);
+      //render error msg for User
+      this._renderError(
+        `Something went wrong 💥: ${err.message}. Please try again!`
+      );
+      throw err;
+    }
+  }
+
+  //[Public Methods/Interfaces]
 }

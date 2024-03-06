@@ -18,6 +18,7 @@ class App {
     this._renderSidebar();
   }
 
+  //[Private Methods]
   _newUser(e) {
     e.preventDefault();
 
@@ -244,14 +245,6 @@ class App {
     } else throw new Error('Sorry! No Web Storage support..');
   }
 
-  _renderMainContent() {
-    //if User logged in successfully
-    if (this._isLoggedIn()) {
-      mainContent.style.display = 'block';
-      welcomeMsg.textContent = this.#currentUser.welcome;
-    } else loginModal.style.display = 'block';
-  }
-
   _renderSidebar() {
     if (this._isLoggedIn()) {
       Array.from(document.querySelectorAll('#sidebar li')).forEach(
@@ -260,7 +253,19 @@ class App {
     }
   }
 
-  // Public Methods/Interfaces
+  //[Public Methods/Interfaces]
+  getCurUser() {
+    return this.#currentUser;
+  }
+
+  renderMainContent() {
+    //if User logged in successfully
+    if (this._isLoggedIn()) {
+      mainContent.style.display = 'block';
+      welcomeMsg.textContent = this.#currentUser.welcome;
+    } else loginModal.style.display = 'block';
+  }
+
   reset() {
     localStorage.removeItem(this.#KEY_USER);
     localStorage.removeItem(this.#KEY_CURRENT_USER);
