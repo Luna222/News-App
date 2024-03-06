@@ -12,8 +12,6 @@ let app;
  */
 const initNews = function () {
   app = new App();
-
-  //render home as loading the page
 };
 initNews();
 

@@ -93,7 +93,6 @@ function checkNumCharacter(text) {
   const numberRegex = /\d/;
   return numberRegex.test(text);
 }
-
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/

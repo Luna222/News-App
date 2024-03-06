@@ -117,7 +117,8 @@
   background-color: #bbb;
 }
 
-#main-content {
+#main-content,
+#sidebar li:not(li[id="item-home"]) {
   display: none;
 }
 

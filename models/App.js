@@ -13,6 +13,9 @@ class App {
     //Get data from local storage
     this.#userArr = this._getLocalStorage(this.#KEY_USER, []);
     this.#currentUser = this._getLocalStorage(this.#KEY_CURRENT_USER);
+
+    //Render default state of the current page
+    this._renderSidebar();
   }
 
   _newUser(e) {
@@ -208,6 +211,12 @@ class App {
     return typeof Storage !== 'undefined';
   }
 
+  _isLoggedIn() {
+    return Object.keys(localStorage).find(
+      key => key === this.#KEY_CURRENT_USER
+    );
+  }
+
   _setLocalStorage(key, value) {
     //check browser support for localStorage/sessionStorage
     if (this._isSupported()) localStorage.setItem(key, JSON.stringify(value));
@@ -237,11 +246,19 @@ class App {
 
   _renderMainContent() {
     //if User logged in successfully
-    if (Object.keys(localStorage).find(key => key === this.#KEY_CURRENT_USER)) {
+    if (this._isLoggedIn()) {
       loginModal.style.display = 'none';
       mainContent.style.display = 'block';
 
       welcomeMsg.textContent = this.#currentUser.welcome;
+    }
+  }
+
+  _renderSidebar() {
+    if (this._isLoggedIn()) {
+      Array.from(document.querySelectorAll('#sidebar li')).forEach(
+        li => (li.style.display = 'list-item')
+      );
     }
   }
 
