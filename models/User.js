@@ -13,9 +13,6 @@ class User {
     this.password = password;
 
     this._setWelcome();
-
-    //Retrieve data for News page
-    this._getNews();
   }
 
   //[Private Methods]
@@ -26,8 +23,6 @@ class User {
   _renderError(errMsg) {
     newsContainer.insertAdjacentText('beforeend', errMsg);
   }
-
-  _renderNews(data) {}
 
   async _getNews() {
     try {
@@ -46,7 +41,7 @@ class User {
 
       const dataNews = await resNews.json();
       console.log(dataNews);
-      this._renderNews(dataNews);
+      // this.renderNews(dataNews);
     } catch (err) {
       console.error('Error occurred while fetching data 💥:', err.message);
       //render error msg for User
@@ -58,4 +53,7 @@ class User {
   }
 
   //[Public Methods/Interfaces]
+  renderNews(data) {
+    this._getNews();
+  }
 }

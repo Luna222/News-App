@@ -212,12 +212,6 @@ class App {
     return typeof Storage !== 'undefined';
   }
 
-  _isLoggedIn() {
-    return Object.keys(localStorage).find(
-      key => key === this.#KEY_CURRENT_USER
-    );
-  }
-
   _setLocalStorage(key, value) {
     //check browser support for localStorage/sessionStorage
     if (this._isSupported()) localStorage.setItem(key, JSON.stringify(value));
@@ -246,7 +240,7 @@ class App {
   }
 
   _renderSidebar() {
-    if (this._isLoggedIn()) {
+    if (this.isLoggedIn()) {
       Array.from(document.querySelectorAll('#sidebar li')).forEach(
         li => (li.style.display = 'list-item')
       );
@@ -258,9 +252,15 @@ class App {
     return this.#currentUser;
   }
 
+  isLoggedIn() {
+    return Object.keys(localStorage).find(
+      key => key === this.#KEY_CURRENT_USER
+    );
+  }
+
   renderMainContent() {
     //if User logged in successfully
-    if (this._isLoggedIn()) {
+    if (this.isLoggedIn()) {
       mainContent.style.display = 'block';
       welcomeMsg.textContent = this.#currentUser.welcome;
     } else loginModal.style.display = 'block';
