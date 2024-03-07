@@ -6,6 +6,7 @@ class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
   #NEWS_API_KEY = 'abf9a80e2bc346c0827cb422debd076b';
+  #curNewsPage = 1;
 
   constructor(firstName, lastName, userName, password) {
     this.firstName = firstName;
@@ -97,6 +98,7 @@ class User {
       return async function () {
         try {
           page++;
+          this.#curNewsPage = page;
 
           if (page === 1) {
             dataNews = await this._getReqData.call(
@@ -147,43 +149,38 @@ class User {
         category = 'general',
         pageSize = 5;
 
-      let page = 0;
-      let dataNews, pagination, lastPage;
+      let page = this.#curNewsPage;
+      let dataNews, pagination;
 
       return async function () {
         try {
-          page++;
+          if (page > 1) page--;
+          this.#curNewsPage = page;
 
-          if (page === 1) {
-            dataNews = await this._getReqData.call(
+          // dataNews = await this._getReqData.call(
+          //   this,
+          //   `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${page}&apiKey=${
+          //     this.#NEWS_API_KEY
+          //   }`
+          // );
+
+          // this._renderNews(dataNews);
+          // this._updatePagination(page);
+
+          pagination = new Pagination();
+          for (let i = page; i >= 1; i--) {
+            const updatedDataNews = await this._getReqData.call(
               this,
-              `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${page}&apiKey=${
+              `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${i}&apiKey=${
                 this.#NEWS_API_KEY
               }`
             );
-            lastPage =
-              dataNews.totalResults % pageSize > 0
-                ? Math.round(dataNews.totalResults / pageSize) + 1
-                : Math.round(dataNews.totalResults / pageSize);
-
-            this._renderNews(dataNews);
-            this._updatePagination(page, lastPage);
-
-            pagination = new Pagination();
-            for (let i = 1; i <= lastPage; i++) {
-              const updatedDataNews = await this._getReqData.call(
-                this,
-                `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${i}&apiKey=${
-                  this.#NEWS_API_KEY
-                }`
-              );
-              pagination.append(updatedDataNews);
-            }
-            pagination.traverseForward();
-          } else {
-            this._renderNews(pagination.traverseForward());
-            this._updatePagination(page, lastPage);
+            pagination.append(updatedDataNews);
           }
+          // pagination.traverseBackward();
+
+          this._renderNews(pagination.traverseBackward());
+          this._updatePagination(page);
         } catch (err) {
           console.error('Error occurred while fetching data 💥:', err.message);
           //render error msg for User

@@ -24,7 +24,7 @@ const initNews = function () {
   reqNews?.call(user);
 
   reqPrevNews = user.getPrevNews(app.isLoggedIn());
-  reqPrevNews?.call(user);
+  // reqPrevNews?.call(user);
 };
 initNews();
 
