@@ -5,7 +5,7 @@ let count = 0;
 class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
-  #curPage = 1;
+  #curPage = 0;
 
   constructor(firstName, lastName, userName, password) {
     this.firstName = firstName;
@@ -69,10 +69,12 @@ class User {
         const countryCode = 'us',
           catgegory = 'health',
           pageSize = 5,
-          page = 1,
           API_KEY = 'ea8425be926845e1b88a8f18b3cf65f0';
+        this.#curPage++;
 
-        const endpointUrlNews = `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${catgegory}&pageSize=${pageSize}&page=${page}&apiKey=${API_KEY}`;
+        const endpointUrlNews = `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${catgegory}&pageSize=${pageSize}&page=${
+          this.#curPage
+        }&apiKey=${API_KEY}`;
 
         const resNews = await fetch(endpointUrlNews);
 
