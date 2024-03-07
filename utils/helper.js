@@ -20,6 +20,7 @@ const newsContainer = document.querySelector('#news-container');
 const btnNext = document.querySelector('#btn-next');
 const btnPrev = document.querySelector('#btn-prev');
 const pageNum = document.querySelector('#page-num');
+const paginationEl = document.querySelector('.pagination');
 
 const CHARACTER_LIMIT = 50;
 
