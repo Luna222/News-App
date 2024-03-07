@@ -5,7 +5,7 @@
 class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
-  #NEWS_API_KEY = 'ea8425be926845e1b88a8f18b3cf65f0';
+  #NEWS_API_KEY = 'f924dd9348ea491f9aa36e18150bae13';
 
   constructor(firstName, lastName, userName, password) {
     this.firstName = firstName;
@@ -80,48 +80,58 @@ class User {
   getNews(isLoggedIn) {
     //if User logged in successfully
     if (isLoggedIn) {
-      let page = 1;
+      const updateUI = function (curPage, lastPage) {
+        pageNum.textContent = curPage;
+        curPage === 1
+          ? (btnPrev.style.display = 'none')
+          : (btnPrev.style.display = 'block');
+
+        curPage === lastPage
+          ? (btnNext.style.display = 'none')
+          : (btnNext.style.display = 'block');
+      };
+
+      const countryCode = 'us',
+        category = 'general',
+        pageSize = 5;
+
+      let page = 0;
+      let dataNews, pagination, lastPage;
+
+      const endpointUrlNews = `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${page}&apiKey=${
+        this.#NEWS_API_KEY
+      }`;
 
       return async function () {
         try {
-          // page++;
-          const updateUI = function (curPage) {
-            pageNum.textContent = curPage;
-            curPage === 1
-              ? (btnPrev.style.display = 'none')
-              : (btnPrev.style.display = 'block');
-          };
+          page++;
 
-          const countryCode = 'us',
-            category = 'general',
-            pageSize = 5;
+          if (page === 1) {
+            dataNews = await this._getReqData.call(this, endpointUrlNews);
 
-          const endpointUrlNews = `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${page}&apiKey=${
-            this.#NEWS_API_KEY
-          }`;
-          const dataNews = await this._getReqData.call(this, endpointUrlNews);
-          this._renderNews(dataNews);
-          updateUI(page);
+            pagination = new Pagination();
+            lastPage =
+              dataNews.totalResults % pageSize > 0
+                ? Math.round(dataNews.totalResults / pageSize) + 1
+                : Math.round(dataNews.totalResults / pageSize);
 
-          const pagination = new Pagination();
-          for (let i = 1; i <= dataNews.totalResults / pageSize; i++) {
-            const updatedDataNews = await this._getReqData.call(
-              this,
-              `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${i}&apiKey=${
-                this.#NEWS_API_KEY
-              }`
-            );
-            pagination.append(updatedDataNews);
+            updateUI(page, lastPage);
+            this._renderNews(dataNews);
+
+            for (let i = 1; i <= lastPage; i++) {
+              const updatedDataNews = await this._getReqData.call(
+                this,
+                `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${i}&apiKey=${
+                  this.#NEWS_API_KEY
+                }`
+              );
+              pagination.append(updatedDataNews);
+            }
+            pagination.traverseForward();
+          } else {
+            this._renderNews(pagination.traverseForward());
+            updateUI(page, lastPage);
           }
-          // console.log(pagination);
-
-          // this._renderNews(pagination.traverseForward());
-          // this._renderNews(pagination.traverseForward());
-
-          // paginationEl.addEventListener('click', function (e) {
-          //   const pagination = new Pagination();
-          //   if (e.target.matches('#btn-next')) console.log(pagination);
-          // });
         } catch (err) {
           console.error('Error occurred while fetching data 💥:', err.message);
           //render error msg for User

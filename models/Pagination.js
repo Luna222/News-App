@@ -43,7 +43,7 @@ class Pagination {
       return null;
     }
 
-    let previousPage = null;
+    // let previousPage = null;
     let current = this.start;
 
     while (current && current.next !== this.currentPage) {
@@ -72,4 +72,5 @@ class Pagination {
 // console.log(pagination.traverseForward()); //20
 // console.log(pagination.traverseBackward()); //10
 // console.log(pagination.traverseForward()); //20
+// console.log(pagination.traverseForward()); //30
 // console.log(pagination.traverseForward()); //30
