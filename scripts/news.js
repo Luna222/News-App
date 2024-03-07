@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-let app, user;
+let app, user, reqNews;
 
 /*******************************************************************************
  * Functions
@@ -19,11 +19,25 @@ const initNews = function () {
     app.getCurUser().password
   );
 
-  //Render data for News page
-  user.getNews(app.isLoggedIn());
+  //User's on page 1: render initial data for News page
+  reqNews = user.getNews(app.isLoggedIn());
+  reqNews?.call(user);
 };
 initNews();
 
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/
+/*
+to navigate to the next page while rendering the corresponding data, 
+  -> I use the power of Closure behavior in JS
+*/
+/**
+ *
+ */
+btnNext.addEventListener('click', reqNews?.bind(user));
+
+/**
+ *
+ */
+btnPrev.addEventListener('click', reqNews?.bind(user));

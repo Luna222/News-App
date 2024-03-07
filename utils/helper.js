@@ -17,6 +17,9 @@ const mainContent = document.querySelector('#main-content');
 const welcomeMsg = document.querySelector('#welcome-message');
 
 const newsContainer = document.querySelector('#news-container');
+const btnNext = document.querySelector('#btn-next');
+const btnPrev = document.querySelector('#btn-prev');
+const pageNum = document.querySelector('#page-num');
 
 const CHARACTER_LIMIT = 50;
 

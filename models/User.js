@@ -5,7 +5,6 @@ let count = 0;
 class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
-  #curPage = 0;
 
   constructor(firstName, lastName, userName, password) {
     this.firstName = firstName;
@@ -22,10 +21,12 @@ class User {
   }
 
   _renderError(errMsg) {
-    newsContainer.insertAdjacentText('beforeend', errMsg);
+    newsContainer.insertAdjacentText('afterbegin', errMsg);
   }
 
   _renderNews(data) {
+    Array.from(newsContainer.children).forEach(article => article.remove());
+
     data.articles.forEach(article => {
       const { urlToImage, title, description, url } = article;
 
@@ -53,6 +54,15 @@ class User {
     });
   }
 
+  async _getReqData(endpointUrl) {
+    const resData = await fetch(endpointUrl);
+
+    if (!resData.ok)
+      throw new Error(`Problem getting data ❌ (${resData.status})`);
+
+    return await resData.json();
+  }
+
   //[Public Methods/Interfaces]
   renderMainContent(isLoggedIn) {
     //if User logged in successfully
@@ -62,35 +72,42 @@ class User {
     } else loginModal.style.display = 'block';
   }
 
-  async getNews(isLoggedIn) {
+  getNews(isLoggedIn) {
     //if User logged in successfully
     if (isLoggedIn) {
-      try {
-        const countryCode = 'us',
-          catgegory = 'health',
-          pageSize = 5,
-          API_KEY = 'ea8425be926845e1b88a8f18b3cf65f0';
-        this.#curPage++;
+      let curPage = 0;
+      return async function () {
+        try {
+          const updateUI = function (crP) {
+            pageNum.textContent = curPage;
+            crP === 1
+              ? (btnPrev.style.display = 'none')
+              : (btnPrev.style.display = 'block');
+          };
 
-        const endpointUrlNews = `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${catgegory}&pageSize=${pageSize}&page=${
-          this.#curPage
-        }&apiKey=${API_KEY}`;
+          const countryCode = 'us',
+            catgegory = 'general',
+            pageSize = 5,
+            API_KEY = 'abf9a80e2bc346c0827cb422debd076b';
+          curPage++;
+          // if (isPrev) curPage--;
+          // else curPage++;
 
-        const resNews = await fetch(endpointUrlNews);
+          const endpointUrlNews = `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${catgegory}&pageSize=${pageSize}&page=${curPage}&apiKey=${API_KEY}`;
 
-        if (!resNews.ok)
-          throw new Error(`Problem getting data ❌ (${resNews.status})`);
+          const dataNews = await this._getReqData.call(this, endpointUrlNews);
 
-        const dataNews = await resNews.json();
-        this._renderNews(dataNews);
-      } catch (err) {
-        console.error('Error occurred while fetching data 💥:', err.message);
-        //render error msg for User
-        this._renderError(
-          `Something went wrong 💥: ${err.message}. Please try again!`
-        );
-        throw err;
-      }
+          updateUI(curPage);
+          this._renderNews(dataNews);
+        } catch (err) {
+          console.error('Error occurred while fetching data 💥:', err.message);
+          //render error msg for User
+          this._renderError(
+            `Something went wrong 💥: ${err.message}. Please try again!`
+          );
+          throw err;
+        }
+      };
     }
   }
 }
