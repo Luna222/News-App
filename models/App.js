@@ -258,14 +258,6 @@ class App {
     );
   }
 
-  renderMainContent() {
-    //if User logged in successfully
-    if (this.isLoggedIn()) {
-      mainContent.style.display = 'block';
-      welcomeMsg.textContent = this.#currentUser.welcome;
-    } else loginModal.style.display = 'block';
-  }
-
   reset() {
     localStorage.removeItem(this.#KEY_USER);
     localStorage.removeItem(this.#KEY_CURRENT_USER);

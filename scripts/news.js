@@ -20,7 +20,7 @@ const initNews = function () {
   );
 
   //Render data for News page
-  if (app.isLoggedIn()) user.renderNews();
+  user.getNews(app.isLoggedIn());
 };
 initNews();
 

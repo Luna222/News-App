@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-let app;
+let app, user;
 
 /*******************************************************************************
  * Functions
@@ -12,9 +12,15 @@ let app;
  */
 const initHome = function () {
   app = new App();
+  user = new User(
+    app.getCurUser().firstName,
+    app.getCurUser().lastName,
+    app.getCurUser().userName,
+    app.getCurUser().password
+  );
 
   //render home as loading the page
-  app.renderMainContent();
+  user.renderMainContent(app.isLoggedIn());
 };
 initHome();
 

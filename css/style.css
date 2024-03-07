@@ -117,8 +117,9 @@
   background-color: #bbb;
 }
 
-#main-content, #login-modal,
-#sidebar li:not(li[id="item-home"]) {
+#main-content,
+#login-modal,
+#sidebar li:not(li[id='item-home']) {
   display: none;
 }
 
