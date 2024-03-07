@@ -78,9 +78,9 @@ class User {
       let curPage = 0;
       return async function () {
         try {
-          const updateUI = function (crP) {
+          const updateUI = function (cp) {
             pageNum.textContent = curPage;
-            crP === 1
+            cp === 1
               ? (btnPrev.style.display = 'none')
               : (btnPrev.style.display = 'block');
           };
@@ -88,7 +88,7 @@ class User {
           const countryCode = 'us',
             catgegory = 'general',
             pageSize = 5,
-            API_KEY = 'abf9a80e2bc346c0827cb422debd076b';
+            API_KEY = '12ca65da61ec431a8591cc40a8afb640';
           curPage++;
           // if (isPrev) curPage--;
           // else curPage++;
