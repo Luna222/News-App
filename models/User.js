@@ -5,7 +5,7 @@
 class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
-  #NEWS_API_KEY = 'f924dd9348ea491f9aa36e18150bae13';
+  #NEWS_API_KEY = 'abf9a80e2bc346c0827cb422debd076b';
 
   constructor(firstName, lastName, userName, password) {
     this.firstName = firstName;
@@ -108,16 +108,15 @@ class User {
 
           if (page === 1) {
             dataNews = await this._getReqData.call(this, endpointUrlNews);
-
-            pagination = new Pagination();
             lastPage =
               dataNews.totalResults % pageSize > 0
                 ? Math.round(dataNews.totalResults / pageSize) + 1
                 : Math.round(dataNews.totalResults / pageSize);
 
-            updateUI(page, lastPage);
             this._renderNews(dataNews);
+            updateUI(page, lastPage);
 
+            pagination = new Pagination();
             for (let i = 1; i <= lastPage; i++) {
               const updatedDataNews = await this._getReqData.call(
                 this,
