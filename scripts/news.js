@@ -22,9 +22,6 @@ const initNews = function () {
   //User's on page 1: render initial data for News page
   reqNews = user.getNews(app.isLoggedIn());
   reqNews?.call(user);
-
-  reqPrevNews = user.getPrevNews(app.isLoggedIn());
-  // reqPrevNews?.call(user);
 };
 initNews();
 
@@ -42,4 +39,4 @@ btnNext.addEventListener('click', reqNews?.bind(user));
 /**
  *
  */
-btnPrev.addEventListener('click', reqPrevNews?.bind(user));
+btnPrev.addEventListener('click', reqNews?.bind(user));
