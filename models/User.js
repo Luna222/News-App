@@ -5,7 +5,7 @@
 class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
-  #NEWS_API_KEY = 'ba6f52a1d24942a2ab3f29d0628ee7e5';
+  #NEWS_API_KEY = '81fa03f4943c4c828a1abf0c5c6c05a1';
   #prevCheck = false;
   #nextCheck = false;
 
@@ -108,7 +108,6 @@ class User {
         pageSize = 5;
 
       let page = 0;
-
       let dataNews, pagination, lastPage;
 
       return async function () {
@@ -127,10 +126,10 @@ class User {
                 this.#NEWS_API_KEY
               }`
             );
-            lastPage =
-              dataNews.totalResults % pageSize > 0
-                ? Math.round(dataNews.totalResults / pageSize) + 1
-                : Math.round(dataNews.totalResults / pageSize);
+            if (dataNews.totalResults % pageSize > 0)
+              lastPage = Math.ceil(dataNews.totalResults / pageSize);
+
+            console.log(lastPage);
 
             this._renderNews(dataNews);
             this._updatePagination(page, lastPage);
