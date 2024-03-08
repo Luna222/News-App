@@ -5,7 +5,7 @@
 class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
-  #NEWS_API_KEY = '81fa03f4943c4c828a1abf0c5c6c05a1';
+  #NEWS_API_KEY = '3cf3580a1bfa4f93b11ceac220da2635';
   #prevCheck = false;
   #nextCheck = false;
 
@@ -104,7 +104,6 @@ class User {
     //if User logged in successfully
     if (isLoggedIn) {
       let page = 0;
-      let dataNews, pagination, lastPage;
 
       return async function (category = '') {
         try {
@@ -117,40 +116,15 @@ class User {
             page++;
           }
 
-          //load page for the first time
-          if (page === 1 && !this.#prevCheck) {
-            dataNews = await this._getReqData.call(
-              this,
-              `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${page}&apiKey=${
-                this.#NEWS_API_KEY
-              }`
-            );
-            if (dataNews.totalResults % pageSize > 0)
-              lastPage = Math.ceil(dataNews.totalResults / pageSize);
+          const dataNews = await this._getReqData.call(
+            this,
+            `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${page}&apiKey=${
+              this.#NEWS_API_KEY
+            }`
+          );
+          const lastPage = Math.ceil(dataNews.totalResults / pageSize);
 
-            this._renderNews(dataNews);
-            this._updatePagination(page, lastPage);
-
-            pagination = new Pagination();
-            for (let i = 1; i <= lastPage; i++) {
-              const updatedDataNews = await this._getReqData.call(
-                this,
-                `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${i}&apiKey=${
-                  this.#NEWS_API_KEY
-                }`
-              );
-              pagination.append(updatedDataNews);
-            }
-            pagination.traverseForward();
-          }
-
-          if (this.#nextCheck) {
-            this._renderNews(pagination.traverseForward());
-          }
-
-          if (this.#prevCheck) {
-            this._renderNews(pagination.traverseBackward());
-          }
+          this._renderNews(dataNews);
           this._updatePagination(page, lastPage);
         } catch (err) {
           console.error('Error occurred while fetching data 💥:', err.message);
