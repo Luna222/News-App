@@ -100,16 +100,13 @@ class User {
     } else loginModal.style.display = 'block';
   }
 
-  getNews(isLoggedIn) {
+  getNews(isLoggedIn, countryCode = 'us', category = 'general', pageSize = 5) {
     //if User logged in successfully
     if (isLoggedIn) {
       let page = 0;
 
-      return async function (category = '') {
+      return async function () {
         try {
-          const countryCode = 'us',
-            pageSize = 5;
-
           if (this.#prevCheck && page > 1) {
             page--;
           } else {
