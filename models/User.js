@@ -18,8 +18,8 @@ class User {
     this._setWelcome();
 
     //Attach event handlers
-    btnPrev.addEventListener('click', this._isPrev.bind(this));
-    btnNext.addEventListener('click', this._isNext.bind(this));
+    btnPrev?.addEventListener('click', this._isPrev.bind(this));
+    btnNext?.addEventListener('click', this._isNext.bind(this));
   }
 
   //[Private Methods]
