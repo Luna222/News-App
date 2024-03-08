@@ -117,7 +117,7 @@ class User {
             page++;
           }
 
-          //load page the first time
+          //load page for the first time
           if (page === 1 && !this.#prevCheck) {
             dataNews = await this._getReqData.call(
               this,
