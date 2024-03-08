@@ -2,6 +2,7 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+const category = 'entertainment';
 let app, user, reqNews, reqPrevNews;
 
 /*******************************************************************************
@@ -21,7 +22,7 @@ const initNews = function () {
 
   //User's on page 1: render initial data for News page
   reqNews = user.getNews(app.isLoggedIn());
-  reqNews?.call(user);
+  reqNews?.call(user, category);
 };
 initNews();
 
@@ -34,9 +35,9 @@ to navigate to the next page while rendering the corresponding data, use Closure
 /**
  *
  */
-btnNext.addEventListener('click', reqNews?.bind(user));
+btnNext.addEventListener('click', reqNews?.bind(user, category));
 
 /**
  *
  */
-btnPrev.addEventListener('click', reqNews?.bind(user));
+btnPrev.addEventListener('click', reqNews?.bind(user, category));

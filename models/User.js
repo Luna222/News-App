@@ -103,15 +103,14 @@ class User {
   getNews(isLoggedIn) {
     //if User logged in successfully
     if (isLoggedIn) {
-      const countryCode = 'us',
-        category = 'general',
-        pageSize = 5;
-
       let page = 0;
       let dataNews, pagination, lastPage;
 
-      return async function () {
+      return async function (category = '') {
         try {
+          const countryCode = 'us',
+            pageSize = 5;
+
           if (this.#prevCheck && page > 1) {
             page--;
           } else {
