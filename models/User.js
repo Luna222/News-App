@@ -128,8 +128,6 @@ class User {
             if (dataNews.totalResults % pageSize > 0)
               lastPage = Math.ceil(dataNews.totalResults / pageSize);
 
-            console.log(lastPage);
-
             this._renderNews(dataNews);
             this._updatePagination(page, lastPage);
 
