@@ -23,7 +23,7 @@ const initNews = function () {
   );
 
   //User's on page 1: render initial data for News page
-  reqNews = user.getNews(app.isLoggedIn(), countryCode, category);
+  reqNews = user.getNews(app.isLoggedIn(), countryCode);
   reqNews?.call(user);
 };
 initNews();
