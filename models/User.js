@@ -3,10 +3,11 @@
 ///////////////////////////////////////
 // USER
 class User {
-  //Private fields on Instances
+  //Private fields on Instances 》
   #uId = `U${(Date.now() + '').slice(-10)}`;
   #NEWS_API_KEY = '3e6a59684d434d029eba06b9eec107a3';
 
+  //Initialize default values
   #curPage = 0;
   #countryCode = 'us';
   #newsCategory = 'general';
@@ -15,7 +16,7 @@ class User {
   #prevCheck = false;
   #nextCheck = false;
 
-  //Public fields
+  //Public fields 》
   KEY_LATEST_PAGE = 'LATEST_PAGE';
 
   constructor(firstName, lastName, userName, password) {
@@ -30,13 +31,10 @@ class User {
       ? getLocalStorage(this.KEY_LATEST_PAGE) - 1
       : 0;
 
-    //Retrieve current Settings of the logged-in User, shown in the form
-    this._loadSettings();
-
     //Attach event handlers
     btnPrev?.addEventListener('click', this._isPrev.bind(this));
     btnNext?.addEventListener('click', this._isNext.bind(this));
-    btnSetting?.addEventListener('click', this._configSettings.bind(this));
+    btnSetting?.addEventListener('click', this._applySettings.bind(this));
   }
 
   //[Private Methods]
@@ -54,9 +52,7 @@ class User {
     this.#prevCheck = false;
   }
 
-  _loadSettings() {}
-
-  _configSettings() {}
+  _applySettings() {}
 
   _renderError(errMsg) {
     newsContainer.insertAdjacentText('afterbegin', errMsg);
@@ -160,5 +156,14 @@ class User {
         }
       };
     }
+  }
+
+  loadSettings() {
+    inputPageSize.value = this.#newsPerPage;
+
+    Array.from(inputCategory.children).forEach(opt => {
+      if (opt.textContent.toLowerCase() === this.#newsCategory)
+        opt.selected = true;
+    });
   }
 }

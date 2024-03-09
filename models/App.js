@@ -3,7 +3,7 @@
 ///////////////////////////////////////
 // APPLICATION
 class App {
-  //Private fields on Instances
+  //Private fields on Instances 》
   #userArr;
   #currentUser;
   #KEY_USER = 'USER_ARRAY';

@@ -8,22 +8,24 @@ const inputLastName = document.querySelector('#input-lastname');
 const inputUsername = document.querySelector('#input-username');
 const inputPWD = document.querySelector('#input-password');
 const inputPWDConfirm = document.querySelector('#input-password-confirm');
+const inputPageSize = document.querySelector('#input-page-size');
+const inputCategory = document.querySelector('#input-category');
+
 const btnRegister = document.querySelector('#btn-submit');
 const btnLogin = document.querySelector('#btn-submit');
 const btnLogout = document.querySelector('#btn-logout');
+const btnNext = document.querySelector('#btn-next');
+const btnPrev = document.querySelector('#btn-prev');
+const btnView = document.querySelector('.card-body .btn');
+const btnSetting = document.querySelector('#btn-submit');
 
 const loginModal = document.querySelector('#login-modal');
 const mainContent = document.querySelector('#main-content');
 const welcomeMsg = document.querySelector('#welcome-message');
 
 const newsContainer = document.querySelector('#news-container');
-const btnNext = document.querySelector('#btn-next');
-const btnPrev = document.querySelector('#btn-prev');
-const btnView = document.querySelector('.card-body .btn');
 const pageNum = document.querySelector('#page-num');
 const paginationEl = document.querySelector('.pagination');
-
-const btnSetting = document.querySelector('#btn-submit');
 
 const CHARACTER_LIMIT = 50;
 

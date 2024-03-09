@@ -18,6 +18,9 @@ const initSetting = function () {
     app.getCurUser().userName,
     app.getCurUser().password
   );
+
+  //Retrieve current Settings of the logged-in User, shown in the form
+  user.loadSettings();
 };
 initSetting();
 
