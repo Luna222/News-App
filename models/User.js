@@ -6,17 +6,16 @@ class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
   #NEWS_API_KEY = '608981aca00f4748b151f26a966de389';
+  #KEY_LATEST_PAGE = 'LATEST_PAGE';
+  #KEY_USER_OPTIONS = 'USER_OPTIONS';
   #prevCheck = false;
   #nextCheck = false;
+
+  //Initialize default values
   #curPage = 0;
   #countryCode = 'us';
-  #newsCategory;
-  #newsPerPage;
-
-  //Public fields
-  KEY_LATEST_PAGE = 'LATEST_PAGE';
-  KEY_NEWS_CATEGORY = 'NEWS_CATEGORY';
-  KEY_PAGE_SIZE = 'PAGE_SIZE';
+  #newsCategory = 'general';
+  #newsPerPage = 5;
 
   constructor(firstName, lastName, userName, password) {
     this.firstName = firstName;
@@ -26,11 +25,9 @@ class User {
     this._setWelcome();
 
     //Get data from local storage
-    this.#curPage = getLocalStorage(this.KEY_LATEST_PAGE)
-      ? getLocalStorage(this.KEY_LATEST_PAGE) - 1
+    this.#curPage = getLocalStorage(this.#KEY_LATEST_PAGE)
+      ? getLocalStorage(this.#KEY_LATEST_PAGE) - 1
       : 0; //(*this step can be omitted if wanted to load the page from start)
-    this.#newsCategory = getLocalStorage(this.KEY_NEWS_CATEGORY, 'general');
-    this.#newsPerPage = getLocalStorage(this.KEY_PAGE_SIZE, 5);
 
     //Attach event handlers
     btnPrev?.addEventListener('click', this._isPrev.bind(this));
@@ -143,7 +140,7 @@ class User {
           this._renderNews(dataNews);
           this._updatePagination(page, lastPage);
           //[OPTIONAL]: store the latest page User was left on for other purposes in the future
-          setLocalStorage(this.KEY_LATEST_PAGE, page);
+          setLocalStorage(this.#KEY_LATEST_PAGE, page);
         } catch (err) {
           console.error('Error occurred while fetching data 💥:', err.message);
           //render error msg for User
@@ -172,11 +169,15 @@ class User {
     this.#newsCategory = inputCategory.value;
 
     //re-set news page
-    this.#curPage = 0;
-    //save new Settings to localStorage
-    setLocalStorage(this.KEY_LATEST_PAGE, this.#curPage);
-    setLocalStorage(this.KEY_NEWS_CATEGORY, this.#newsCategory);
-    setLocalStorage(this.KEY_PAGE_SIZE, this.#newsPerPage);
+    setLocalStorage(this.#KEY_LATEST_PAGE, 0);
+
+    //save User's Settings to localStorage
+    const options = {
+      user: this.userName,
+      newsCategory: this.#newsCategory,
+      newsPerPage: this.#newsPerPage,
+    };
+    setLocalStorage(this.#KEY_USER_OPTIONS, options);
     alert('Settings saved!');
   }
 }
