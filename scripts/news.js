@@ -3,7 +3,7 @@
  * Variables
  ******************************************************************************/
 const countryCode = 'jp';
-const category = 'entertainment';
+const category = 'science';
 const pageSize = 10;
 let app, user, reqNews, reqPrevNews;
 
