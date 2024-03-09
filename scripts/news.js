@@ -4,7 +4,7 @@
  ******************************************************************************/
 const countryCode = 'us';
 const category = 'entertainment';
-const pageSize = 5;
+const pageSize = 10;
 let app, user, reqNews, reqPrevNews;
 
 /*******************************************************************************

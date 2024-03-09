@@ -20,7 +20,7 @@ class User {
     this.password = password;
     this._setWelcome();
 
-    //Get data from local storage
+    //Get data from local storage (*this step can be omitted if wanted to load from the 1st page)
     this.#curPage = getLocalStorage(this.KEY_LATEST_PAGE)
       ? getLocalStorage(this.KEY_LATEST_PAGE) - 1
       : 0;
