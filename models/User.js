@@ -85,7 +85,7 @@ class User {
       ? (btnPrev.style.display = 'none')
       : (btnPrev.style.display = 'block');
 
-    curPage === lastPage
+    curPage >= lastPage
       ? (btnNext.style.display = 'none')
       : (btnNext.style.display = 'block');
   };
