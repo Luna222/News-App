@@ -2,10 +2,7 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-const countryCode = 'jp';
-const category = 'science';
-const pageSize = 10;
-let app, user, reqNews, reqPrevNews;
+let app, user, reqNews;
 
 /*******************************************************************************
  * Functions
@@ -23,7 +20,7 @@ const initNews = function () {
   );
 
   //render initial data for News page
-  reqNews = user.getNews(app.isLoggedIn(), countryCode, category, pageSize);
+  reqNews = user.getNews(app.isLoggedIn());
   reqNews?.call(user);
 };
 initNews();

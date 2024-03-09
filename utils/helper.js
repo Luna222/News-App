@@ -23,6 +23,8 @@ const btnView = document.querySelector('.card-body .btn');
 const pageNum = document.querySelector('#page-num');
 const paginationEl = document.querySelector('.pagination');
 
+const btnSetting = document.querySelector('#btn-submit');
+
 const CHARACTER_LIMIT = 50;
 
 /*******************************************************************************

@@ -6,9 +6,14 @@ class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
   #NEWS_API_KEY = '3e6a59684d434d029eba06b9eec107a3';
+
+  #curPage = 0;
+  #countryCode = 'us';
+  #newsCategory = 'general';
+  #newsPerPage = 5;
+
   #prevCheck = false;
   #nextCheck = false;
-  #curPage = 0;
 
   //Public fields
   KEY_LATEST_PAGE = 'LATEST_PAGE';
@@ -25,9 +30,13 @@ class User {
       ? getLocalStorage(this.KEY_LATEST_PAGE) - 1
       : 0;
 
+    //Retrieve current Settings of the logged-in User, shown in the form
+    this._loadSettings();
+
     //Attach event handlers
     btnPrev?.addEventListener('click', this._isPrev.bind(this));
     btnNext?.addEventListener('click', this._isNext.bind(this));
+    btnSetting?.addEventListener('click', this._configSettings.bind(this));
   }
 
   //[Private Methods]
@@ -44,6 +53,10 @@ class User {
     this.#nextCheck = true;
     this.#prevCheck = false;
   }
+
+  _loadSettings() {}
+
+  _configSettings() {}
 
   _renderError(errMsg) {
     newsContainer.insertAdjacentText('afterbegin', errMsg);
@@ -108,9 +121,13 @@ class User {
     } else loginModal.style.display = 'block';
   }
 
-  getNews(isLoggedIn, countryCode = 'us', category = 'general', pageSize = 5) {
+  getNews(isLoggedIn) {
     //if User logged in successfully
     if (isLoggedIn) {
+      const countryCode = this.#countryCode,
+        category = this.#newsCategory,
+        pageSize = this.#newsPerPage;
+
       let page = this.#curPage;
 
       return async function () {
@@ -120,8 +137,6 @@ class User {
           } else {
             page++;
           }
-          //[OPTIONAL]: store the latest page User was left on for other purposes in the future
-          setLocalStorage(this.KEY_LATEST_PAGE, page);
 
           const dataNews = await this._getReqData.call(
             this,
@@ -133,6 +148,8 @@ class User {
 
           this._renderNews(dataNews);
           this._updatePagination(page, lastPage);
+          //[OPTIONAL]: store the latest page User was left on for other purposes in the future
+          setLocalStorage(this.KEY_LATEST_PAGE, page);
         } catch (err) {
           console.error('Error occurred while fetching data 💥:', err.message);
           //render error msg for User
