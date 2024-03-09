@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-const countryCode = 'us';
+const countryCode = 'jp';
 const category = 'entertainment';
 const pageSize = 10;
 let app, user, reqNews, reqPrevNews;
@@ -23,7 +23,7 @@ const initNews = function () {
   );
 
   //render initial data for News page
-  reqNews = user.getNews(app.isLoggedIn(), countryCode);
+  reqNews = user.getNews(app.isLoggedIn(), countryCode, category, pageSize);
   reqNews?.call(user);
 };
 initNews();
