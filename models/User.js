@@ -8,6 +8,7 @@ class User {
   #NEWS_API_KEY = '3cf3580a1bfa4f93b11ceac220da2635';
   #prevCheck = false;
   #nextCheck = false;
+  #curPage;
 
   constructor(firstName, lastName, userName, password) {
     this.firstName = firstName;
@@ -112,17 +113,18 @@ class User {
           } else {
             page++;
           }
+          this.#curPage = page;
 
           const dataNews = await this._getReqData.call(
             this,
-            `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${page}&apiKey=${
-              this.#NEWS_API_KEY
-            }`
+            `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${
+              this.#curPage
+            }&apiKey=${this.#NEWS_API_KEY}`
           );
           const lastPage = Math.ceil(dataNews.totalResults / pageSize);
 
           this._renderNews(dataNews);
-          this._updatePagination(page, lastPage);
+          this._updatePagination(this.#curPage, lastPage);
         } catch (err) {
           console.error('Error occurred while fetching data 💥:', err.message);
           //render error msg for User

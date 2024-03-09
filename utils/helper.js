@@ -19,6 +19,7 @@ const welcomeMsg = document.querySelector('#welcome-message');
 const newsContainer = document.querySelector('#news-container');
 const btnNext = document.querySelector('#btn-next');
 const btnPrev = document.querySelector('#btn-prev');
+const btnView = document.querySelector('.card-body .btn');
 const pageNum = document.querySelector('#page-num');
 const paginationEl = document.querySelector('.pagination');
 

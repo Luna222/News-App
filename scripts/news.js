@@ -22,7 +22,7 @@ const initNews = function () {
     app.getCurUser().password
   );
 
-  //User's on page 1: render initial data for News page
+  //render initial data for News page
   reqNews = user.getNews(app.isLoggedIn(), countryCode);
   reqNews?.call(user);
 };
