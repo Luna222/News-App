@@ -3,7 +3,7 @@
 ///////////////////////////////////////
 // APPLICATION
 class App {
-  //Private fields on Instances 》
+  //Private fields on Instances
   #userArr;
   #currentUser;
   #KEY_USER = 'USER_ARRAY';
@@ -47,12 +47,14 @@ class App {
   }
 
   /**
-   * cautious
+   * 🔺cautious
    */
   _resetAll() {
     localStorage.removeItem(this.#KEY_USER);
     localStorage.removeItem(this.#KEY_CURRENT_USER);
     localStorage.removeItem(this.#currentUser.KEY_LATEST_PAGE);
+    localStorage.removeItem(this.#currentUser.KEY_NEWS_CATEGORY);
+    localStorage.removeItem(this.#currentUser.KEY_PAGE_SIZE);
   }
 
   //[Public Methods/Interfaces]

@@ -3,21 +3,20 @@
 ///////////////////////////////////////
 // USER
 class User {
-  //Private fields on Instances 》
+  //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
-  #NEWS_API_KEY = '3e6a59684d434d029eba06b9eec107a3';
-
-  //Initialize default values
-  #curPage = 0;
-  #countryCode = 'us';
-  #newsCategory = 'general';
-  #newsPerPage = 5;
-
+  #NEWS_API_KEY = '608981aca00f4748b151f26a966de389';
   #prevCheck = false;
   #nextCheck = false;
+  #curPage = 0;
+  #countryCode = 'us';
+  #newsCategory;
+  #newsPerPage;
 
-  //Public fields 》
+  //Public fields
   KEY_LATEST_PAGE = 'LATEST_PAGE';
+  KEY_NEWS_CATEGORY = 'NEWS_CATEGORY';
+  KEY_PAGE_SIZE = 'PAGE_SIZE';
 
   constructor(firstName, lastName, userName, password) {
     this.firstName = firstName;
@@ -26,10 +25,12 @@ class User {
     this.password = password;
     this._setWelcome();
 
-    //Get data from local storage (*this step can be omitted if wanted to load from the 1st page)
+    //Get data from local storage
     this.#curPage = getLocalStorage(this.KEY_LATEST_PAGE)
       ? getLocalStorage(this.KEY_LATEST_PAGE) - 1
-      : 0;
+      : 0; //(*this step can be omitted if wanted to load the page from start)
+    this.#newsCategory = getLocalStorage(this.KEY_NEWS_CATEGORY, 'general');
+    this.#newsPerPage = getLocalStorage(this.KEY_PAGE_SIZE, 5);
 
     //Attach event handlers
     btnPrev?.addEventListener('click', this._isPrev.bind(this));
@@ -155,22 +156,27 @@ class User {
     }
   }
 
-  loadSettings() {
-    inputPageSize.value = this.#newsPerPage;
+  loadSettings(isLoggedIn) {
+    if (isLoggedIn) {
+      inputPageSize.value = this.#newsPerPage;
 
-    Array.from(inputCategory.children).forEach(opt => {
-      if (opt.textContent.toLowerCase() === this.#newsCategory)
-        opt.selected = true;
-    });
+      Array.from(inputCategory.children).forEach(opt => {
+        if (opt.textContent.toLowerCase() === this.#newsCategory.toLowerCase())
+          opt.selected = true;
+      });
+    }
   }
 
   applySettings() {
     this.#newsPerPage = +inputPageSize.value;
     this.#newsCategory = inputCategory.value;
 
-    //re-set news page:
+    //re-set news page
     this.#curPage = 0;
+    //save new Settings to localStorage
     setLocalStorage(this.KEY_LATEST_PAGE, this.#curPage);
-    alert('Settings updated!');
+    setLocalStorage(this.KEY_NEWS_CATEGORY, this.#newsCategory);
+    setLocalStorage(this.KEY_PAGE_SIZE, this.#newsPerPage);
+    alert('Settings saved!');
   }
 }

@@ -20,7 +20,7 @@ const initSetting = function () {
   );
 
   //Retrieve current Settings of the logged-in User, shown in the form
-  user.loadSettings();
+  user.loadSettings(app.isLoggedIn());
 };
 initSetting();
 
