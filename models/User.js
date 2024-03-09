@@ -34,7 +34,6 @@ class User {
     //Attach event handlers
     btnPrev?.addEventListener('click', this._isPrev.bind(this));
     btnNext?.addEventListener('click', this._isNext.bind(this));
-    btnSetting?.addEventListener('click', this._applySettings.bind(this));
   }
 
   //[Private Methods]
@@ -51,8 +50,6 @@ class User {
     this.#nextCheck = true;
     this.#prevCheck = false;
   }
-
-  _applySettings() {}
 
   _renderError(errMsg) {
     newsContainer.insertAdjacentText('afterbegin', errMsg);
@@ -165,5 +162,15 @@ class User {
       if (opt.textContent.toLowerCase() === this.#newsCategory)
         opt.selected = true;
     });
+  }
+
+  applySettings() {
+    this.#newsPerPage = +inputPageSize.value;
+    this.#newsCategory = inputCategory.value;
+
+    //re-set news page:
+    this.#curPage = 0;
+    setLocalStorage(this.KEY_LATEST_PAGE, this.#curPage);
+    alert('Settings updated!');
   }
 }

@@ -18,4 +18,4 @@ initLogin();
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/
-btnLogin.addEventListener('click', app._login.bind(app));
+btnLogin.addEventListener('click', app.login.bind(app));

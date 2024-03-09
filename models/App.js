@@ -19,7 +19,44 @@ class App {
   }
 
   //[Private Methods]
-  _newUser(e) {
+  /**
+   *
+   * @param {Object} userData - user's data inputs from form
+   *
+   * @returns {Boolean}
+   */
+  _isFilled(userData) {
+    let check = true;
+
+    for (const field of Object.keys(userData)) {
+      if (!userData[field]) {
+        alert(`${field} is empty!`);
+        check = false;
+        break;
+      }
+    }
+    return check;
+  }
+
+  _renderSidebar() {
+    if (this.isLoggedIn()) {
+      Array.from(document.querySelectorAll('#sidebar li')).forEach(
+        li => (li.style.display = 'list-item')
+      );
+    }
+  }
+
+  /**
+   * cautious
+   */
+  _resetAll() {
+    localStorage.removeItem(this.#KEY_USER);
+    localStorage.removeItem(this.#KEY_CURRENT_USER);
+    localStorage.removeItem(this.#currentUser.KEY_LATEST_PAGE);
+  }
+
+  //[Public Methods/Interfaces]
+  newUser(e) {
     e.preventDefault();
 
     //get data inputs from form & store them into object data:
@@ -152,7 +189,7 @@ class App {
       .catch(err => console.error(err));
   }
 
-  async _login(e) {
+  async login(e) {
     e.preventDefault();
 
     const dataInput = {
@@ -180,7 +217,7 @@ class App {
     } else return alert('Invalid User Info! 🙅');
   }
 
-  _logout(e) {
+  logout(e) {
     e.preventDefault();
     localStorage.removeItem(this.#KEY_CURRENT_USER);
     localStorage.removeItem(this.#currentUser.KEY_LATEST_PAGE);
@@ -190,43 +227,6 @@ class App {
     }, 1000);
   }
 
-  /**
-   *
-   * @param {Object} userData - user's data inputs from form
-   *
-   * @returns {Boolean}
-   */
-  _isFilled(userData) {
-    let check = true;
-
-    for (const field of Object.keys(userData)) {
-      if (!userData[field]) {
-        alert(`${field} is empty!`);
-        check = false;
-        break;
-      }
-    }
-    return check;
-  }
-
-  _renderSidebar() {
-    if (this.isLoggedIn()) {
-      Array.from(document.querySelectorAll('#sidebar li')).forEach(
-        li => (li.style.display = 'list-item')
-      );
-    }
-  }
-
-  /**
-   * cautious
-   */
-  _resetAll() {
-    localStorage.removeItem(this.#KEY_USER);
-    localStorage.removeItem(this.#KEY_CURRENT_USER);
-    localStorage.removeItem(this.#currentUser.KEY_LATEST_PAGE);
-  }
-
-  //[Public Methods/Interfaces]
   getCurUser() {
     return this.#currentUser;
   }
