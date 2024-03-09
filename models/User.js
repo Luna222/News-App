@@ -6,10 +6,12 @@ class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
   #NEWS_API_KEY = '3f65c644138e442ab731b964e848f506';
-  #KEY_LATEST_PAGE = 'LATEST_PAGE';
   #prevCheck = false;
   #nextCheck = false;
   #curPage = 0;
+
+  //Public fields
+  KEY_LATEST_PAGE = 'LATEST_PAGE';
 
   constructor(firstName, lastName, userName, password) {
     this.firstName = firstName;
@@ -19,8 +21,8 @@ class User {
     this._setWelcome();
 
     //Get data from local storage
-    this.#curPage = getLocalStorage(this.#KEY_LATEST_PAGE)
-      ? getLocalStorage(this.#KEY_LATEST_PAGE) - 1
+    this.#curPage = getLocalStorage(this.KEY_LATEST_PAGE)
+      ? getLocalStorage(this.KEY_LATEST_PAGE) - 1
       : 0;
 
     //Attach event handlers
@@ -119,7 +121,7 @@ class User {
             page++;
           }
           //[OPTIONAL]: store the latest page User was left on for other purposes in the future
-          setLocalStorage(this.#KEY_LATEST_PAGE, page);
+          setLocalStorage(this.KEY_LATEST_PAGE, page);
 
           const dataNews = await this._getReqData.call(
             this,
@@ -141,9 +143,5 @@ class User {
         }
       };
     }
-  }
-
-  reset() {
-    localStorage.removeItem(this.#KEY_LATEST_PAGE);
   }
 }

@@ -183,6 +183,7 @@ class App {
   _logout(e) {
     e.preventDefault();
     localStorage.removeItem(this.#KEY_CURRENT_USER);
+    localStorage.removeItem(this.#currentUser.KEY_LATEST_PAGE);
 
     setTimeout(function () {
       window.location.href = '../pages/login.html';
@@ -216,6 +217,15 @@ class App {
     }
   }
 
+  /**
+   * cautious
+   */
+  _resetAll() {
+    localStorage.removeItem(this.#KEY_USER);
+    localStorage.removeItem(this.#KEY_CURRENT_USER);
+    localStorage.removeItem(this.#currentUser.KEY_LATEST_PAGE);
+  }
+
   //[Public Methods/Interfaces]
   getCurUser() {
     return this.#currentUser;
@@ -225,10 +235,5 @@ class App {
     return Object.keys(localStorage).find(
       key => key === this.#KEY_CURRENT_USER
     );
-  }
-
-  reset() {
-    localStorage.removeItem(this.#KEY_USER);
-    localStorage.removeItem(this.#KEY_CURRENT_USER);
   }
 }
