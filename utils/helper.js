@@ -97,6 +97,54 @@ function checkNumCharacter(text) {
   const numberRegex = /\d/;
   return numberRegex.test(text);
 }
+
+/**
+ *
+ * @returns
+ */
+const isSupported = function () {
+  return typeof Storage !== 'undefined';
+};
+
+/**
+ *
+ * @param {*} key
+ * @param {*} value
+ */
+const setLocalStorage = function (key, value) {
+  //check browser support for localStorage/sessionStorage
+  if (isSupported()) localStorage.setItem(key, JSON.stringify(value));
+  else throw new Error('Sorry! No Web Storage support..');
+};
+
+/**
+ *
+ * @param {*} key
+ * @param {*} defaultVal
+ *
+ * @returns
+ */
+const getLocalStorage = function (key, defaultVal = 'N/A') {
+  const parseUser = userData =>
+    new User(
+      userData?.firstName,
+      userData?.lastName,
+      userData?.userName,
+      userData?.password
+    );
+
+  //check browser support for localStorage/sessionStorage
+  if (isSupported()) {
+    //parse the stored value back into its original *Class Instance form (instead of regular JS Object)
+    const dataFromKey = JSON.parse(localStorage.getItem(key)) ?? defaultVal;
+
+    const dataFinal = Array.isArray(dataFromKey)
+      ? dataFromKey?.map(parseUser)
+      : parseUser(dataFromKey);
+    return dataFinal;
+  } else throw new Error('Sorry! No Web Storage support..');
+};
+
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/

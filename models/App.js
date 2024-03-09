@@ -11,8 +11,8 @@ class App {
 
   constructor() {
     //Get data from local storage
-    this.#userArr = this._getLocalStorage(this.#KEY_USER, []);
-    this.#currentUser = this._getLocalStorage(this.#KEY_CURRENT_USER);
+    this.#userArr = getLocalStorage(this.#KEY_USER, []);
+    this.#currentUser = getLocalStorage(this.#KEY_CURRENT_USER);
 
     //Render default state of the current page
     this._renderSidebar();
@@ -139,7 +139,7 @@ class App {
             )
           );
           //set local storage to the newly created User
-          this._setLocalStorage(this.#KEY_USER, this.#userArr);
+          setLocalStorage(this.#KEY_USER, this.#userArr);
           alert(
             'Registered successfully! 🎉. Please go to Login page to proceed.'
           );
@@ -172,7 +172,7 @@ class App {
       this.#currentUser &&
       (await matchPasswords(dataInput.pwd, this.#currentUser.password))
     ) {
-      this._setLocalStorage(this.#KEY_CURRENT_USER, this.#currentUser);
+      setLocalStorage(this.#KEY_CURRENT_USER, this.#currentUser);
 
       setTimeout(function () {
         window.location.href = '../index.html';
@@ -206,37 +206,6 @@ class App {
       }
     }
     return check;
-  }
-
-  _isSupported() {
-    return typeof Storage !== 'undefined';
-  }
-
-  _setLocalStorage(key, value) {
-    //check browser support for localStorage/sessionStorage
-    if (this._isSupported()) localStorage.setItem(key, JSON.stringify(value));
-    else throw new Error('Sorry! No Web Storage support..');
-  }
-
-  _getLocalStorage(key, defaultVal = 'N/A') {
-    const parseUser = userData =>
-      new User(
-        userData?.firstName,
-        userData?.lastName,
-        userData?.userName,
-        userData?.password
-      );
-
-    //check browser support for localStorage/sessionStorage
-    if (this._isSupported()) {
-      //parse the stored value back into its original *Class Instance form (instead of regular JS Object)
-      const dataFromKey = JSON.parse(localStorage.getItem(key)) ?? defaultVal;
-
-      const dataFinal = Array.isArray(dataFromKey)
-        ? dataFromKey?.map(parseUser)
-        : parseUser(dataFromKey);
-      return dataFinal;
-    } else throw new Error('Sorry! No Web Storage support..');
   }
 
   _renderSidebar() {
