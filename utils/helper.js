@@ -124,7 +124,8 @@ const setLocalStorage = function (key, value) {
  *
  * @returns
  */
-const getLocalStorage = function (key, defaultVal = 'N/A') {
+const getLocalStorage = function (key, defaultVal = '') {
+  //parse the stored value back into its original *Class Instance form (instead of regular JS Object)
   const parseUser = userData =>
     new User(
       userData?.firstName,
@@ -135,12 +136,17 @@ const getLocalStorage = function (key, defaultVal = 'N/A') {
 
   //check browser support for localStorage/sessionStorage
   if (isSupported()) {
-    //parse the stored value back into its original *Class Instance form (instead of regular JS Object)
+    let dataFinal;
     const dataFromKey = JSON.parse(localStorage.getItem(key)) ?? defaultVal;
 
-    const dataFinal = Array.isArray(dataFromKey)
-      ? dataFromKey?.map(parseUser)
-      : parseUser(dataFromKey);
+    if (Array.isArray(dataFromKey)) {
+      dataFinal = dataFromKey?.map(parseUser);
+    } else if (
+      Object.prototype.toString.call(dataFromKey) === '[object Object]'
+    ) {
+      dataFinal = parseUser(dataFromKey);
+    } else dataFinal = dataFromKey;
+
     return dataFinal;
   } else throw new Error('Sorry! No Web Storage support..');
 };

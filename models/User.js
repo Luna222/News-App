@@ -5,18 +5,23 @@
 class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
-  #NEWS_API_KEY = '3cf3580a1bfa4f93b11ceac220da2635';
+  #NEWS_API_KEY = '3f65c644138e442ab731b964e848f506';
+  #KEY_LATEST_PAGE = 'LATEST_PAGE';
   #prevCheck = false;
   #nextCheck = false;
-  #curPage;
+  #curPage = 0;
 
   constructor(firstName, lastName, userName, password) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.userName = userName;
     this.password = password;
-
     this._setWelcome();
+
+    //Get data from local storage
+    this.#curPage = getLocalStorage(this.#KEY_LATEST_PAGE)
+      ? getLocalStorage(this.#KEY_LATEST_PAGE) - 1
+      : 0;
 
     //Attach event handlers
     btnPrev?.addEventListener('click', this._isPrev.bind(this));
@@ -104,7 +109,7 @@ class User {
   getNews(isLoggedIn, countryCode = 'us', category = 'general', pageSize = 5) {
     //if User logged in successfully
     if (isLoggedIn) {
-      let page = 0;
+      let page = this.#curPage;
 
       return async function () {
         try {
@@ -113,18 +118,19 @@ class User {
           } else {
             page++;
           }
-          this.#curPage = page;
+          //[OPTIONAL]: store the latest page User was left on for other purposes in the future
+          setLocalStorage(this.#KEY_LATEST_PAGE, page);
 
           const dataNews = await this._getReqData.call(
             this,
-            `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${
-              this.#curPage
-            }&apiKey=${this.#NEWS_API_KEY}`
+            `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${page}&apiKey=${
+              this.#NEWS_API_KEY
+            }`
           );
           const lastPage = Math.ceil(dataNews.totalResults / pageSize);
 
           this._renderNews(dataNews);
-          this._updatePagination(this.#curPage, lastPage);
+          this._updatePagination(page, lastPage);
         } catch (err) {
           console.error('Error occurred while fetching data 💥:', err.message);
           //render error msg for User
@@ -135,5 +141,9 @@ class User {
         }
       };
     }
+  }
+
+  reset() {
+    localStorage.removeItem(this.#KEY_LATEST_PAGE);
   }
 }
