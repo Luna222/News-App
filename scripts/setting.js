@@ -19,7 +19,7 @@ const initSetting = function () {
     app.getCurUser().password
   );
 
-  //Retrieve current Settings of the logged-in User, shown in the form
+  //Retrieve current Settings of the logged-in User as loading the page, shown in the form
   user.loadSettings(app.isLoggedIn());
 };
 initSetting();
