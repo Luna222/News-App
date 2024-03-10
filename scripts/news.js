@@ -29,7 +29,7 @@ initNews();
  * Handle Events
  ******************************************************************************/
 /*
-to navigate to the next page while rendering the corresponding data, use Closure behavior in JS
+to navigate back n forth through the pages while rendering the corresponding data, I will use Closure behavior in JS
 */
 /**
  *
