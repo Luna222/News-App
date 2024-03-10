@@ -52,6 +52,9 @@ class App {
   _resetAll() {
     localStorage.removeItem(this.#KEY_USER);
     localStorage.removeItem(this.#KEY_CURRENT_USER);
+    localStorage.removeItem(this.#currentUser.KEY_LATEST_PAGE);
+    localStorage.removeItem(this.#currentUser.KEY_NEWS_CATEGORY);
+    localStorage.removeItem(this.#currentUser.KEY_PAGE_SIZE);
   }
 
   //[Public Methods/Interfaces]
