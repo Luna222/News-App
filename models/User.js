@@ -61,7 +61,7 @@ class User {
       ? curUserOption?.newsCategory
       : 'general';
 
-    this.#todoArr = getLocalStorage(this.#KEY_TODO, []);
+    this.#todoArr = JSON.parse(localStorage.getItem(this.#KEY_TODO)) ?? [];
   }
 
   _isPrev() {
