@@ -20,6 +20,7 @@ const btnPrev = document.querySelector('#btn-prev');
 const btnView = document.querySelector('.card-body .btn');
 const btnSetting = document.querySelector('#btn-submit');
 const btnAdd = document.querySelector('#btn-add');
+const btnDel = document.querySelector('#todo-list .close');
 
 const loginModal = document.querySelector('#login-modal');
 const mainContent = document.querySelector('#main-content');
