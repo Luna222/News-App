@@ -46,8 +46,7 @@ class User {
       ? getLocalStorage(this.#KEY_LATEST_PAGE) - 1
       : 0; //(*this step can be omitted if wanted to load the page from start)
 
-    this.#userOptions =
-      JSON.parse(localStorage.getItem(this.#KEY_USER_OPTIONS)) ?? [];
+    this.#userOptions = getLocalStorage(this.#KEY_USER_OPTIONS, []);
 
     const curUserOption = this.#userOptions.find(
       opt => opt.userName === this.userName
@@ -61,7 +60,7 @@ class User {
       ? curUserOption?.newsCategory
       : 'general';
 
-    this.#todoArr = JSON.parse(localStorage.getItem(this.#KEY_TODO)) ?? [];
+    this.#todoArr = getLocalStorage(this.#KEY_TODO, []);
   }
 
   _isPrev() {

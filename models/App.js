@@ -11,8 +11,8 @@ class App {
 
   constructor() {
     //Get data from local storage
-    this.#userArr = getLocalStorage(this.#KEY_USER, []);
-    this.#currentUser = getLocalStorage(this.#KEY_CURRENT_USER);
+    this.#userArr = getUserLocalStorage(this.#KEY_USER, []);
+    this.#currentUser = getUserLocalStorage(this.#KEY_CURRENT_USER);
 
     //Render default state of the current page
     this._renderSidebar();
