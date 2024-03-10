@@ -132,7 +132,10 @@ const setLocalStorage = function (key, value) {
  * @returns
  */
 const getLocalStorage = function (key, defaultVal = '') {
-  //parse the stored value back into its original *Class Instance form (instead of regular JS Object)
+  /*
+  parse the stored value back into its original *Class Instance form (instead of regular JS Object)
+    🔺 Overly abuse this func will lead to 'maximum call stack size exceeded' error
+  */
   const parseUser = userData =>
     new User(
       userData?.firstName,
