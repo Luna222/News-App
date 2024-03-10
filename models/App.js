@@ -46,6 +46,14 @@ class App {
     }
   }
 
+  _wait = function (seconds, dir) {
+    return new Promise(function (resolve) {
+      setTimeout(function () {
+        window.location.href = dir;
+      }, seconds * 1000);
+    });
+  };
+
   /**
    * 🔺cautious
    */
@@ -164,7 +172,7 @@ class App {
 
     //hashing password
     hashPassword(dataInput.pwd)
-      .then(hashedPWD => {
+      .then(async hashedPWD => {
         if (validateUserData(dataInput)) {
           this.#userArr.push(
             new User(
@@ -180,9 +188,10 @@ class App {
             'Registered successfully! 🎉. Please go to Login page to proceed.'
           );
 
-          setTimeout(function () {
-            window.location.href = '../pages/login.html';
-          }, 1000);
+          // setTimeout(function () {
+          //   window.location.href = '../pages/login.html';
+          // }, 1000);
+          await this._wait(1, '../pages/login.html');
         }
       })
       .catch(err => console.error(err));
@@ -210,9 +219,10 @@ class App {
     ) {
       setLocalStorage(this.#KEY_CURRENT_USER, this.#currentUser);
 
-      setTimeout(function () {
-        window.location.href = '../index.html';
-      }, 1000);
+      // setTimeout(function () {
+      //   window.location.href = '../index.html';
+      // }, 1000);
+      await this._wait(1, '../index.html');
     } else return alert('Invalid User Info! 🙅');
   }
 
