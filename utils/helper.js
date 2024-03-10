@@ -10,6 +10,7 @@ const inputPWD = document.querySelector('#input-password');
 const inputPWDConfirm = document.querySelector('#input-password-confirm');
 const inputPageSize = document.querySelector('#input-page-size');
 const inputCategory = document.querySelector('#input-category');
+const inputTask = document.querySelector('#input-task');
 
 const btnRegister = document.querySelector('#btn-submit');
 const btnLogin = document.querySelector('#btn-submit');
@@ -18,6 +19,7 @@ const btnNext = document.querySelector('#btn-next');
 const btnPrev = document.querySelector('#btn-prev');
 const btnView = document.querySelector('.card-body .btn');
 const btnSetting = document.querySelector('#btn-submit');
+const btnAdd = document.querySelector('#btn-add');
 
 const loginModal = document.querySelector('#login-modal');
 const mainContent = document.querySelector('#main-content');

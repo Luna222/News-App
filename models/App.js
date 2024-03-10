@@ -229,7 +229,7 @@ class App {
   logout(e) {
     e.preventDefault();
     localStorage.removeItem(this.#KEY_CURRENT_USER);
-    localStorage.removeItem(this.#currentUser.KEY_LATEST_PAGE);
+    localStorage.removeItem(this.#currentUser.getKeyPage());
 
     setTimeout(function () {
       window.location.href = '../pages/login.html';

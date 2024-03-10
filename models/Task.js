@@ -16,7 +16,7 @@ class Task {
   }
 
   //[Public Methods/Interfaces]
-  renderTask(isLoggedIn) {
+  renderTask(isLoggedIn, curUser) {
     if (isLoggedIn) {
     }
   }
