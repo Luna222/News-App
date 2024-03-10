@@ -5,19 +5,21 @@
 class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
+
   #NEWS_API_KEY = '608981aca00f4748b151f26a966de389';
   #KEY_LATEST_PAGE = 'LATEST_PAGE';
   #KEY_USER_OPTIONS = 'USER_OPTIONS';
+  #KEY_TODO = 'USER_TODO';
+
   #prevCheck = false;
   #nextCheck = false;
   #userOptions;
+  #todoArr;
 
   #curPage = 0;
   #countryCode = 'us';
   #newsCategory;
   #newsPerPage;
-
-  //Public fields
 
   constructor(firstName, lastName, userName, password) {
     this.firstName = firstName;
@@ -58,6 +60,8 @@ class User {
     this.#newsCategory = curUserOption?.newsCategory
       ? curUserOption?.newsCategory
       : 'general';
+
+    this.#todoArr = getLocalStorage(this.#KEY_TODO, []);
   }
 
   _isPrev() {
@@ -208,4 +212,28 @@ class User {
   getKeyPage() {
     return this.#KEY_LATEST_PAGE;
   }
+
+  renderTask(isLoggedIn) {
+    if (isLoggedIn) {
+    }
+  }
+
+  addTask(e) {
+    e.preventDefault();
+
+    if (inputTask.value) {
+      this.#todoArr.push(
+        new Task(inputTask.value.trim(), this.userName, false)
+      );
+      setLocalStorage(this.#KEY_TODO, this.#todoArr);
+      alert('Task added! 👍');
+
+      setTimeout(this.renderTask.bind(this), 1000);
+      inputTask.blur();
+    }
+  }
+
+  toggleTask() {}
+
+  delTask() {}
 }

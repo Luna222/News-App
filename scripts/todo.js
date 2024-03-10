@@ -18,9 +18,13 @@ const initTodo = function () {
     app.getCurUser().userName,
     app.getCurUser().password
   );
+
+  //render Todo List as loading the page
+  user.renderTask(app.isLoggedIn());
 };
 initTodo();
 
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/
+btnAdd.addEventListener('click', user.addTask.bind(user));

@@ -46,21 +46,13 @@ class App {
     }
   }
 
-  _wait = function (seconds, dir) {
+  _redirectDir = function (seconds, dir) {
     return new Promise(function (resolve) {
       setTimeout(function () {
         window.location.href = dir;
       }, seconds * 1000);
     });
   };
-
-  /**
-   * 🔺cautious
-   */
-  _resetAll() {
-    localStorage.removeItem(this.#KEY_USER);
-    localStorage.removeItem(this.#KEY_CURRENT_USER);
-  }
 
   //[Public Methods/Interfaces]
   newUser(e) {
@@ -187,11 +179,7 @@ class App {
           alert(
             'Registered successfully! 🎉. Please go to Login page to proceed.'
           );
-
-          // setTimeout(function () {
-          //   window.location.href = '../pages/login.html';
-          // }, 1000);
-          await this._wait(1, '../pages/login.html');
+          await this._redirectDir(1, '../pages/login.html');
         }
       })
       .catch(err => console.error(err));
@@ -218,22 +206,15 @@ class App {
       (await matchPasswords(dataInput.pwd, this.#currentUser.password))
     ) {
       setLocalStorage(this.#KEY_CURRENT_USER, this.#currentUser);
-
-      // setTimeout(function () {
-      //   window.location.href = '../index.html';
-      // }, 1000);
-      await this._wait(1, '../index.html');
+      await this._redirectDir(1, '../index.html');
     } else return alert('Invalid User Info! 🙅');
   }
 
-  logout(e) {
+  async logout(e) {
     e.preventDefault();
     localStorage.removeItem(this.#KEY_CURRENT_USER);
     localStorage.removeItem(this.#currentUser.getKeyPage());
-
-    setTimeout(function () {
-      window.location.href = '../pages/login.html';
-    }, 1000);
+    await this._redirectDir(1, '../pages/login.html');
   }
 
   getCurUser() {

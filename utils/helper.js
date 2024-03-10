@@ -28,6 +28,7 @@ const welcomeMsg = document.querySelector('#welcome-message');
 const newsContainer = document.querySelector('#news-container');
 const pageNum = document.querySelector('#page-num');
 const paginationEl = document.querySelector('.pagination');
+const todoList = document.querySelector('#todo-list');
 
 const CHARACTER_LIMIT = 50;
 
