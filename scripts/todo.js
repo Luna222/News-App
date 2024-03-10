@@ -20,7 +20,7 @@ const initTodo = function () {
   );
 
   //render Todo List as loading the page
-  user.renderTask(app.isLoggedIn());
+  if (app.isLoggedIn()) user.renderTask();
 };
 initTodo();
 

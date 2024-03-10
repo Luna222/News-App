@@ -212,16 +212,16 @@ class User {
     return this.#KEY_LATEST_PAGE;
   }
 
-  renderTask(isLoggedIn) {
-    if (isLoggedIn) {
-      this.#todoArr.forEach(tsk => {
-        const htmlTask = `<li>${tsk.task}<span class="close">×</span></li>`;
+  renderTask() {
+    Array.from(todoList.children).forEach(tsk => tsk.remove());
 
-        if (tsk.owner === this.userName) {
-          todoList.insertAdjacentHTML('beforeend', htmlTask);
-        }
-      });
-    }
+    this.#todoArr.forEach(tsk => {
+      const htmlTask = `<li>${tsk.task}<span class="close">×</span></li>`;
+
+      if (tsk.owner === this.userName) {
+        todoList.insertAdjacentHTML('afterbegin', htmlTask);
+      }
+    });
   }
 
   addTask(e) {
@@ -236,8 +236,8 @@ class User {
       );
       //save tasks to localStorage
       setLocalStorage(this.#KEY_TODO, this.#todoArr);
-      alert('Task added! 👍');
-      this.renderTask.bind(this);
+      this.renderTask();
+      alert(`Task added! Don't forget to complete it ;)`);
 
       //clear input & focuses
       inputTask.value = '';
