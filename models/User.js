@@ -14,6 +14,7 @@ class User {
   #prevCheck = false;
   #nextCheck = false;
   #userOptions;
+  #curTask;
   #todoArr;
 
   #curPage = 0;
@@ -195,10 +196,10 @@ class User {
     //re-set news page
     setLocalStorage(this.#KEY_LATEST_PAGE, 0);
 
-    //save new Settings to localStorage
     this.#userOptions = this.#userOptions.filter(
       opt => opt.userName !== this.userName
     );
+    //save new Settings to localStorage
     this.#userOptions.push({
       userName: this.userName,
       newsPerPage: this.#newsPerPage,
@@ -214,6 +215,13 @@ class User {
 
   renderTask(isLoggedIn) {
     if (isLoggedIn) {
+      this.#todoArr.forEach(tsk => {
+        const htmlTask = `<li>${tsk.task}<span class="close">×</span></li>`;
+
+        if (tsk.owner === this.userName) {
+          todoList.insertAdjacentHTML('beforeend', htmlTask);
+        }
+      });
     }
   }
 
@@ -221,18 +229,26 @@ class User {
     e.preventDefault();
 
     if (inputTask.value) {
+      this.#todoArr = this.#todoArr.filter(
+        tsk => tsk.task !== inputTask.value.trim()
+      );
       this.#todoArr.push(
         new Task(inputTask.value.trim(), this.userName, false)
       );
+      //save tasks to localStorage
       setLocalStorage(this.#KEY_TODO, this.#todoArr);
       alert('Task added! 👍');
 
       setTimeout(this.renderTask.bind(this), 1000);
+      //clear input & focuses
+      inputTask.value = '';
       inputTask.blur();
     }
   }
 
-  toggleTask() {}
+  toggleTask(e) {
+    e.preventDefault();
+  }
 
   delTask() {}
 }
