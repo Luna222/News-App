@@ -6,8 +6,11 @@ class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
   #NEWS_API_KEY = '608981aca00f4748b151f26a966de389';
+  #KEY_USER_OPTIONS = 'USER_OPTIONS';
   #prevCheck = false;
   #nextCheck = false;
+  #userOptions;
+
   #curPage = 0;
   #countryCode = 'us';
   #newsCategory;
@@ -15,8 +18,6 @@ class User {
 
   //Public fields
   KEY_LATEST_PAGE = 'LATEST_PAGE';
-  KEY_NEWS_CATEGORY = 'NEWS_CATEGORY';
-  KEY_PAGE_SIZE = 'PAGE_SIZE';
 
   constructor(firstName, lastName, userName, password) {
     this.firstName = firstName;
@@ -26,11 +27,7 @@ class User {
     this._setWelcome();
 
     //Get data from local storage
-    this.#curPage = getLocalStorage(this.KEY_LATEST_PAGE)
-      ? getLocalStorage(this.KEY_LATEST_PAGE) - 1
-      : 0; //(*this step can be omitted if wanted to load the page from start)
-    this.#newsCategory = getLocalStorage(this.KEY_NEWS_CATEGORY, 'general');
-    this.#newsPerPage = getLocalStorage(this.KEY_PAGE_SIZE, 5);
+    this._getFromStorage();
 
     //Attach event handlers
     btnPrev?.addEventListener('click', this._isPrev.bind(this));
@@ -40,6 +37,27 @@ class User {
   //[Private Methods]
   _setWelcome() {
     this.welcome = `Welcome ${this.firstName}! 🌻`;
+  }
+
+  _getFromStorage() {
+    this.#curPage = getLocalStorage(this.KEY_LATEST_PAGE)
+      ? getLocalStorage(this.KEY_LATEST_PAGE) - 1
+      : 0; //(*this step can be omitted if wanted to load the page from start)
+
+    this.#userOptions =
+      JSON.parse(localStorage.getItem(this.#KEY_USER_OPTIONS)) ?? [];
+
+    const curUserOption = this.#userOptions.find(
+      opt => opt.userName === this.userName
+    );
+
+    this.#newsPerPage = curUserOption?.newsPerPage
+      ? curUserOption?.newsPerPage
+      : 5;
+
+    this.#newsCategory = curUserOption?.newsCategory
+      ? curUserOption?.newsCategory
+      : 'general';
   }
 
   _isPrev() {
@@ -161,7 +179,7 @@ class User {
       inputPageSize.value = this.#newsPerPage;
 
       Array.from(inputCategory.children).forEach(opt => {
-        if (opt.textContent.toLowerCase() === this.#newsCategory.toLowerCase())
+        if (opt.textContent.toLowerCase() === this.#newsCategory?.toLowerCase())
           opt.selected = true;
       });
     }
@@ -172,11 +190,18 @@ class User {
     this.#newsCategory = inputCategory.value;
 
     //re-set news page
-    this.#curPage = 0;
+    setLocalStorage(this.KEY_LATEST_PAGE, 0);
+
     //save new Settings to localStorage
-    setLocalStorage(this.KEY_LATEST_PAGE, this.#curPage);
-    setLocalStorage(this.KEY_NEWS_CATEGORY, this.#newsCategory);
-    setLocalStorage(this.KEY_PAGE_SIZE, this.#newsPerPage);
+    this.#userOptions = this.#userOptions.filter(
+      opt => opt.userName !== this.userName
+    );
+    this.#userOptions.push({
+      userName: this.userName,
+      newsPerPage: this.#newsPerPage,
+      newsCategory: this.#newsCategory,
+    });
+    setLocalStorage(this.#KEY_USER_OPTIONS, this.#userOptions);
     alert('Settings saved!');
   }
 }
