@@ -14,7 +14,6 @@ class User {
   #prevCheck = false;
   #nextCheck = false;
   #userOptions;
-  #curTask;
   #todoArr;
 
   #curPage = 0;
@@ -238,8 +237,8 @@ class User {
       //save tasks to localStorage
       setLocalStorage(this.#KEY_TODO, this.#todoArr);
       alert('Task added! 👍');
+      this.renderTask.bind(this);
 
-      setTimeout(this.renderTask.bind(this), 1000);
       //clear input & focuses
       inputTask.value = '';
       inputTask.blur();
