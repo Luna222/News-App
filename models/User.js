@@ -6,7 +6,7 @@ class User {
   //Private fields on Instances
   #uId = `U${(Date.now() + '').slice(-10)}`;
 
-  #NEWS_API_KEY = '608981aca00f4748b151f26a966de389';
+  #NEWS_API_KEY = '7d972bf8adae4d349dc4e1f2a8b1b4a5';
   #KEY_LATEST_PAGE = 'LATEST_PAGE';
   #KEY_USER_OPTIONS = 'USER_OPTIONS';
   #KEY_TODO = 'USER_TODO';
