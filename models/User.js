@@ -3,9 +3,6 @@
 ///////////////////////////////////////
 // USER
 class User {
-  //Public fields on Instances
-  uId = `U${(Date.now() + '').slice(-10)}`;
-
   //Private fields on Instances
   #NEWS_API_KEY = '7d972bf8adae4d349dc4e1f2a8b1b4a5';
   #KEY_LATEST_PAGE = 'LATEST_PAGE';
@@ -27,6 +24,8 @@ class User {
     this.lastName = lastName;
     this.userName = userName;
     this.password = password;
+
+    this.uId = `U${(Date.now() + '').slice(-10)}`;
     this._setWelcome();
 
     //Get data from local storage
@@ -61,7 +60,9 @@ class User {
       ? curUserOption?.newsCategory
       : 'general';
 
-    this.#todoArr = getLocalStorage(this.#KEY_TODO, []);
+    this.#todoArr = getLocalStorage(this.#KEY_TODO, []).map(
+      tsk => new Task(tsk?.task, tsk?.owner, tsk?.isDone)
+    );
   }
 
   _isPrev() {
