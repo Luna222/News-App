@@ -219,7 +219,7 @@ class User {
     Array.from(todoList.children).forEach(tsk => tsk.remove());
 
     this.#todoArr.forEach(tsk => {
-      const htmlTask = `<li class="${tsk.isDone ? 'checked' : ''}">${
+      const htmlTask = `<li class="${tsk.isDone ? 'checked' : ''} task">${
         tsk.task
       }<span class="close">×</span></li>`;
 
@@ -229,7 +229,6 @@ class User {
           : todoList.insertAdjacentHTML('beforeend', htmlTask);
       }
     });
-    Array.from(todoList.children).forEach(tsk => tsk.classList.add('task'));
   }
 
   addTask(e) {
