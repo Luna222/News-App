@@ -259,7 +259,7 @@ class User {
     if (e.target.matches('.task')) {
       // e.target.classList.toggle('checked');
       const curTask = this.#todoArr.find(
-        tsk => tsk.task === e.target.textContent.slice(0, -1)
+        tsk => tsk.task === e.target.textContent.trim().slice(0, -1)
       );
       curTask.isDone = !curTask.isDone;
       this.renderTask();
