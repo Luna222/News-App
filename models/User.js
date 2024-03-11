@@ -6,6 +6,7 @@ class User {
   //Public fields on Instances
   uId = `U${(Date.now() + '').slice(-10)}`;
 
+  //Private fields on Instances
   #NEWS_API_KEY = '7d972bf8adae4d349dc4e1f2a8b1b4a5';
   #KEY_LATEST_PAGE = 'LATEST_PAGE';
   #KEY_USER_OPTIONS = 'USER_OPTIONS';
