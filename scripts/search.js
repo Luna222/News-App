@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-let app;
+let app, user;
 
 /*******************************************************************************
  * Functions
@@ -12,6 +12,15 @@ let app;
  */
 const initSearch = function () {
   app = new App();
+  user = new User(
+    app.getCurUser().firstName,
+    app.getCurUser().lastName,
+    app.getCurUser().userName,
+    app.getCurUser().password
+  );
+
+  //Re-set News page to page 1
+  user.resetNewsPage();
 };
 initSearch();
 

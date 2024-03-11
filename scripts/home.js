@@ -21,6 +21,9 @@ const initHome = function () {
 
   //render home as loading the page
   user.renderMainContent(app.isLoggedIn());
+
+  //Re-set News page to page 1
+  user.resetNewsPage();
 };
 initHome();
 

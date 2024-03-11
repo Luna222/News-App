@@ -178,6 +178,10 @@ class User {
     }
   }
 
+  resetNewsPage() {
+    setLocalStorage(this.#KEY_LATEST_PAGE, 0);
+  }
+
   renderMainContent(isLoggedIn) {
     //if User logged in successfully
     if (isLoggedIn) {
@@ -202,7 +206,7 @@ class User {
     this.#newsCategory = inputCategory.value;
 
     //re-set news page
-    setLocalStorage(this.#KEY_LATEST_PAGE, 0);
+    this.resetNewsPage();
 
     this.#userOptions = this.#userOptions.filter(
       opt => opt.userName !== this.userName

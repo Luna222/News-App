@@ -21,6 +21,9 @@ const initTodo = function () {
 
   //render Todo List as loading the page
   if (app.isLoggedIn()) user.renderTask();
+
+  //Re-set News page to page 1
+  user.resetNewsPage();
 };
 initTodo();
 
