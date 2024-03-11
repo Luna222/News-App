@@ -137,14 +137,6 @@ class User {
   }
 
   //[Public Methods/Interfaces]
-  renderMainContent(isLoggedIn) {
-    //if User logged in successfully
-    if (isLoggedIn) {
-      mainContent.style.display = 'block';
-      welcomeMsg.textContent = this.welcome;
-    } else loginModal.style.display = 'block';
-  }
-
   getNews(isLoggedIn) {
     //if User logged in successfully
     if (isLoggedIn) {
@@ -184,6 +176,14 @@ class User {
         }
       };
     }
+  }
+
+  renderMainContent(isLoggedIn) {
+    //if User logged in successfully
+    if (isLoggedIn) {
+      mainContent.style.display = 'block';
+      welcomeMsg.textContent = this.welcome;
+    } else loginModal.style.display = 'block';
   }
 
   loadSettings(isLoggedIn) {
