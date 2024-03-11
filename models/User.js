@@ -221,23 +221,21 @@ class User {
     return this.#KEY_LATEST_PAGE;
   }
 
-  renderTask(isLoggedIn) {
-    if (isLoggedIn) {
-      todoContainer.style.display = 'block';
-      Array.from(todoList.children).forEach(tsk => tsk.remove());
+  renderTask() {
+    todoContainer.style.display = 'block';
+    Array.from(todoList.children).forEach(tsk => tsk.remove());
 
-      this.#todoArr.forEach(tsk => {
-        const htmlTask = `<li class="${tsk.isDone ? 'checked' : ''} task">${
-          tsk.task
-        }<span class="close">×</span></li>`;
+    this.#todoArr.forEach(tsk => {
+      const htmlTask = `<li class="${tsk.isDone ? 'checked' : ''} task">${
+        tsk.task
+      }<span class="close">×</span></li>`;
 
-        if (tsk.owner === this.userName) {
-          !tsk.isDone
-            ? todoList.insertAdjacentHTML('afterbegin', htmlTask)
-            : todoList.insertAdjacentHTML('beforeend', htmlTask);
-        }
-      });
-    }
+      if (tsk.owner === this.userName) {
+        !tsk.isDone
+          ? todoList.insertAdjacentHTML('afterbegin', htmlTask)
+          : todoList.insertAdjacentHTML('beforeend', htmlTask);
+      }
+    });
   }
 
   addTask(e) {
