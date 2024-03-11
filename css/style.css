@@ -119,6 +119,7 @@
 
 #main-content,
 #login-modal,
+#todo-container,
 #sidebar li:not(li[id='item-home']) {
   display: none;
 }
