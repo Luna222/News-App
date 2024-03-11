@@ -43,9 +43,6 @@ class User {
   }
 
   _getFromStorage() {
-    const parseTask = userTask =>
-      new Task(userTask?.task, userTask?.owner, userTask?.isDone);
-
     this.#curPage = getLocalStorage(this.#KEY_LATEST_PAGE)
       ? getLocalStorage(this.#KEY_LATEST_PAGE) - 1
       : 0; //(*this step can be omitted if wanted to load the page from start)
@@ -64,7 +61,7 @@ class User {
       ? curUserOption?.newsCategory
       : 'general';
 
-    this.#todoArr = getLocalStorage(this.#KEY_TODO, []).map(parseTask);
+    this.#todoArr = getLocalStorage(this.#KEY_TODO, []);
   }
 
   _isPrev() {
@@ -287,7 +284,6 @@ class User {
         tsk =>
           tsk.task === e.target.parentElement.textContent.trim().slice(0, -1)
       );
-      console.log(curTask);
       delTaskById.call(this, curTask.taskId);
     }
   }
