@@ -137,22 +137,31 @@ const getUserLocalStorage = function (key, defaultVal = '') {
   parse the stored value back into its original *Class Instance form (instead of regular JS Object)
     🔺 Overly abuse this func will lead to 'maximum call stack size exceeded' error
   */
-  const parseUser = userData =>
-    new User(
-      userData?.firstName,
-      userData?.lastName,
-      userData?.userName,
-      userData?.password
-    );
+  const parseUser = function (dataArr) {
+    return dataArr.slice().map(userData => {
+      const user = new User(
+        userData?.firstName,
+        userData?.lastName,
+        userData?.userName,
+        userData?.password
+      );
+      user.uId = userData.uId;
+      return user;
+    });
+  };
 
   //check browser support for localStorage/sessionStorage
   if (isSupported()) {
     const dataFromKey = JSON.parse(localStorage.getItem(key)) ?? defaultVal;
 
     const dataFinal = Array.isArray(dataFromKey)
-      ? dataFromKey?.map(parseUser)
-      : parseUser(dataFromKey);
-
+      ? parseUser(dataFromKey)
+      : new User(
+          dataFromKey?.firstName,
+          dataFromKey?.lastName,
+          dataFromKey?.userName,
+          dataFromKey?.password
+        );
     return dataFinal;
   } else throw new Error('Sorry! No Web Storage support..');
 };
