@@ -3,8 +3,8 @@
 ///////////////////////////////////////
 // USER
 class User {
-  //Private fields on Instances
-  #uId = `U${(Date.now() + '').slice(-10)}`;
+  //Public fields on Instances
+  uId = `U${(Date.now() + '').slice(-10)}`;
 
   #NEWS_API_KEY = '7d972bf8adae4d349dc4e1f2a8b1b4a5';
   #KEY_LATEST_PAGE = 'LATEST_PAGE';
@@ -266,9 +266,7 @@ class User {
 
   delTask(e) {
     const delTaskById = function (taskId) {
-      const taskIndex = this.#todoArr.findIndex(
-        tsk => tsk.getTaskId() === taskId
-      );
+      const taskIndex = this.#todoArr.findIndex(tsk => tsk.taskId === taskId);
 
       if (taskIndex > -1) {
         if (confirm('❗️Are you sure to delete this Task?')) {
@@ -288,7 +286,8 @@ class User {
         tsk =>
           tsk.task === e.target.parentElement.textContent.trim().slice(0, -1)
       );
-      delTaskById.call(this, curTask.getTaskId());
+      console.log(curTask);
+      delTaskById.call(this, curTask.taskId);
     }
   }
 }
