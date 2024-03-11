@@ -37,4 +37,4 @@ todoList.addEventListener('click', user.toggleTask.bind(user));
 /**
  * @brief handle deleting task event using Event Delegation
  */
-todoContainer.addEventListener('click', user.delTask.bind(user));
+todoList.addEventListener('click', user.delTask.bind(user));
