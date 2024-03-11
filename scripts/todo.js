@@ -28,3 +28,8 @@ initTodo();
  * Handle Events
  ******************************************************************************/
 btnAdd.addEventListener('click', user.addTask.bind(user));
+
+/**
+ * @brief handle task toggling event using Event Delegation
+ */
+todoList.addEventListener('click', user.toggleTask.bind(user));

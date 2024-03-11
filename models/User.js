@@ -42,6 +42,9 @@ class User {
   }
 
   _getFromStorage() {
+    const parseTask = userTask =>
+      new Task(userTask?.task, userTask?.owner, userTask?.isDone);
+
     this.#curPage = getLocalStorage(this.#KEY_LATEST_PAGE)
       ? getLocalStorage(this.#KEY_LATEST_PAGE) - 1
       : 0; //(*this step can be omitted if wanted to load the page from start)
@@ -60,7 +63,7 @@ class User {
       ? curUserOption?.newsCategory
       : 'general';
 
-    this.#todoArr = getLocalStorage(this.#KEY_TODO, []);
+    this.#todoArr = getLocalStorage(this.#KEY_TODO, []).map(parseTask);
   }
 
   _isPrev() {
@@ -216,12 +219,17 @@ class User {
     Array.from(todoList.children).forEach(tsk => tsk.remove());
 
     this.#todoArr.forEach(tsk => {
-      const htmlTask = `<li>${tsk.task}<span class="close">×</span></li>`;
+      const htmlTask = `<li class="${tsk.isDone ? 'checked' : ''}">${
+        tsk.task
+      }<span class="close">×</span></li>`;
 
       if (tsk.owner === this.userName) {
-        todoList.insertAdjacentHTML('afterbegin', htmlTask);
+        !tsk.isDone
+          ? todoList.insertAdjacentHTML('afterbegin', htmlTask)
+          : todoList.insertAdjacentHTML('beforeend', htmlTask);
       }
     });
+    Array.from(todoList.children).forEach(tsk => tsk.classList.add('task'));
   }
 
   addTask(e) {
@@ -247,6 +255,15 @@ class User {
 
   toggleTask(e) {
     e.preventDefault();
+
+    if (e.target.matches('.task')) {
+      // e.target.classList.toggle('checked');
+      const curTask = this.#todoArr.find(
+        tsk => tsk.task === e.target.textContent.slice(0, -1)
+      );
+      curTask.isDone = !curTask.isDone;
+      this.renderTask();
+    }
   }
 
   delTask() {}
