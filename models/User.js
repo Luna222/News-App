@@ -262,6 +262,7 @@ class User {
         tsk => tsk.task === e.target.textContent.trim().slice(0, -1)
       );
       curTask.isDone = !curTask.isDone;
+      setLocalStorage(this.#KEY_TODO, this.#todoArr);
       this.renderTask();
     }
   }
