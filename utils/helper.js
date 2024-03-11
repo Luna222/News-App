@@ -20,7 +20,6 @@ const btnPrev = document.querySelector('#btn-prev');
 const btnView = document.querySelector('.card-body .btn');
 const btnSetting = document.querySelector('#btn-submit');
 const btnAdd = document.querySelector('#btn-add');
-const btnDel = document.querySelector('#todo-list .close');
 
 const loginModal = document.querySelector('#login-modal');
 const mainContent = document.querySelector('#main-content');
@@ -29,6 +28,7 @@ const welcomeMsg = document.querySelector('#welcome-message');
 const newsContainer = document.querySelector('#news-container');
 const pageNum = document.querySelector('#page-num');
 const paginationEl = document.querySelector('.pagination');
+const todoContainer = document.querySelector('#todo-container');
 const todoList = document.querySelector('#todo-list');
 
 const CHARACTER_LIMIT = 50;

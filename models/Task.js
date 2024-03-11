@@ -11,4 +11,9 @@ class Task {
     this.owner = owner;
     this.isDone = isDone;
   }
+
+  //[Public Methods/Interfaces]
+  getTaskId() {
+    return this.#taskId;
+  }
 }

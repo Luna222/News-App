@@ -253,18 +253,42 @@ class User {
   }
 
   toggleTask(e) {
-    e.preventDefault();
-
     if (e.target.matches('.task')) {
       // e.target.classList.toggle('checked');
       const curTask = this.#todoArr.find(
         tsk => tsk.task === e.target.textContent.trim().slice(0, -1)
       );
       curTask.isDone = !curTask.isDone;
-      setLocalStorage(this.#KEY_TODO, this.#todoArr);
       this.renderTask();
+      setLocalStorage(this.#KEY_TODO, this.#todoArr);
     }
   }
 
-  delTask() {}
+  delTask(e) {
+    const delTaskById = function (taskId) {
+      const taskIndex = this.#todoArr.findIndex(
+        tsk => tsk.getTaskId() === taskId
+      );
+
+      if (taskIndex > -1) {
+        if (confirm('❗️Are you sure to delete this Task?')) {
+          this.#todoArr.splice(taskIndex, 1);
+          this.renderTask();
+          setLocalStorage(this.#KEY_TODO, this.#todoArr);
+          alert('Task deleted!');
+        }
+      } else {
+        alert('Task NOT found');
+      }
+      return;
+    };
+
+    if (e.target.matches('#todo-list .close')) {
+      const curTask = this.#todoArr.find(
+        tsk =>
+          tsk.task === e.target.parentElement.textContent.trim().slice(0, -1)
+      );
+      delTaskById.call(this, curTask.getTaskId());
+    }
+  }
 }

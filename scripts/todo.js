@@ -30,6 +30,11 @@ initTodo();
 btnAdd.addEventListener('click', user.addTask.bind(user));
 
 /**
- * @brief handle task toggling event using Event Delegation
+ * @brief handle toggling task event using Event Delegation
  */
 todoList.addEventListener('click', user.toggleTask.bind(user));
+
+/**
+ * @brief handle deleting task event using Event Delegation
+ */
+todoList.addEventListener('click', user.delTask.bind(user));
