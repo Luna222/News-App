@@ -43,6 +43,14 @@ class User {
   }
 
   _getFromStorage() {
+    const parseTask = function (dataArr) {
+      return dataArr.slice().map(tskData => {
+        const task = new Task(tskData?.task, tskData?.owner, tskData?.isDone);
+        task.taskId = tskData.taskId;
+        return task;
+      });
+    };
+
     this.#curPage = getLocalStorage(this.#KEY_LATEST_PAGE)
       ? getLocalStorage(this.#KEY_LATEST_PAGE) - 1
       : 0; //(*this step can be omitted if wanted to load the page from start)
@@ -61,7 +69,7 @@ class User {
       ? curUserOption?.newsCategory
       : 'general';
 
-    this.#todoArr = getLocalStorage(this.#KEY_TODO, []);
+    this.#todoArr = parseTask(getLocalStorage(this.#KEY_TODO, []));
   }
 
   _isPrev() {
