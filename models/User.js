@@ -13,15 +13,18 @@ class User {
   #KEY_USER_OPTIONS = 'USER_OPTIONS';
   #KEY_TODO = 'USER_TODO';
   #KEY_SEARCH_RESULTS = 'SEARCH_RESULT';
+  #KEY_QUERY = 'QUERY';
 
   #prevCheck = false;
   #nextCheck = false;
   #userOptions;
   #todoArr;
 
-  #searchResult;
-  #curNewsPage = 0;
   #curSearchPage = 0;
+  #queryKey;
+  #searchResult;
+
+  #curNewsPage = 0;
   #newsCategory;
   #newsPerPage;
 
@@ -77,6 +80,8 @@ class User {
     this.#todoArr = parseTask(getLocalStorage(this.#KEY_TODO, []));
 
     this.#searchResult = getLocalStorage(this.#KEY_SEARCH_RESULTS, []);
+
+    this.#queryKey = getLocalStorage(this.#KEY_QUERY, []);
   }
 
   _isPrev() {
@@ -144,6 +149,7 @@ class User {
 
   getNewsByKey(
     isLoggedIn,
+    page = 0,
     timeRange = (function () {
       const now = new Date();
       const yesterday = new Date(now);
@@ -167,10 +173,7 @@ class User {
       if (isNewest) sortBy += ',publishedAt';
       if (isPopularity) sortBy += ',popularity';
 
-      let page = 0;
       return async function () {
-        console.log(queryKey);
-
         try {
           if (this.#prevCheck && page > 1) {
             page--;
@@ -185,7 +188,6 @@ class User {
             }`
           );
           const lastPage = Math.ceil(dataNews.totalResults / pageSize);
-          console.log(dataNews);
           console.log(
             `https://newsapi.org/v2/everything?q="+${queryKey}"&from=${from}&to=${to}&sortBy=${sortBy}&language=${language}&pageSize=${pageSize}&page=${page}&apiKey=${
               this.#NEWS_API_KEY
@@ -200,6 +202,9 @@ class User {
 
           this.#searchResult = dataNews;
           setLocalStorage(this.#KEY_SEARCH_RESULTS, dataNews);
+
+          this.#queryKey = queryKey;
+          setLocalStorage(this.#KEY_QUERY, queryKey);
         } catch (err) {
           console.error('Error occurred while fetching data 💥:', err.message);
           //render error msg for User
@@ -310,6 +315,10 @@ class User {
 
   getKeySearchPage() {
     return this.#KEY_LATEST_SEARCH_PAGE;
+  }
+
+  getQueryKey() {
+    return this.#queryKey;
   }
 
   getSearchRsl() {

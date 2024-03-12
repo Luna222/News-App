@@ -21,12 +21,26 @@ const initSearch = function () {
 
   //render results page where User left on
   if (user.getSearchPage() > 0) {
+    inputQuery.value = user.getQueryKey();
+
     user.renderNews(user.getSearchRsl());
 
     user.updatePagination(
       user.getSearchPage(),
-      user.getSearchRsl().totalResults / user.getPageSize()
+      Math.ceil(user.getSearchRsl().totalResults / user.getPageSize())
     );
+
+    const reqSearchedNews = user.getNewsByKey(
+      app.isLoggedIn(),
+      user.getSearchPage()
+    );
+
+    /*
+    to navigate back n forth through the pages while rendering the corresponding data, I will use Closure behavior in JS
+    */
+    btnNext.addEventListener('click', reqSearchedNews?.bind(user));
+
+    btnPrev.addEventListener('click', reqSearchedNews?.bind(user));
   }
 
   //Re-set News page to page 0
