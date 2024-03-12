@@ -22,6 +22,9 @@ const initNews = function () {
   //render initial data for News page
   reqNews = user.getNews(app.isLoggedIn());
   reqNews?.call(user);
+
+  //clear results on Search page
+  user.resetSearchPage();
 };
 initNews();
 

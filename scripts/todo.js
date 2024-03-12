@@ -24,6 +24,9 @@ const initTodo = function () {
 
   //Re-set News page to page 1
   user.resetNewsPage();
+
+  //clear results on Search page
+  user.resetSearchPage();
 };
 initTodo();
 

@@ -22,8 +22,9 @@ const initHome = function () {
   //render home as loading the page
   user.renderMainContent(app.isLoggedIn());
 
-  //Re-set News page to page 1
+  //Re-set News page to page 1 & clear results on Search page
   user.resetNewsPage();
+  user.resetSearchPage();
 };
 initHome();
 

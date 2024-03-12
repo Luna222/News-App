@@ -259,11 +259,13 @@ class User {
   };
 
   resetNewsPage() {
-    setLocalStorage(this.#KEY_LATEST_NEWS_PAGE, 0);
+    this.#curNewsPage = 0;
+    setLocalStorage(this.#KEY_LATEST_NEWS_PAGE, this.#curNewsPage);
   }
 
   resetSearchPage() {
-    setLocalStorage(this.#KEY_LATEST_SEARCH_PAGE, 0);
+    this.#curSearchPage = 0;
+    setLocalStorage(this.#KEY_LATEST_SEARCH_PAGE, this.#curSearchPage);
   }
 
   renderMainContent(isLoggedIn) {
