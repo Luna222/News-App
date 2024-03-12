@@ -189,9 +189,9 @@ class User {
 
       return [yesterday, now]; //ISO date formats
     })(),
-    sortBy = 'publishedAt',
-    isPrecise = false,
-    isPopularity = false,
+    sortBy = 'relevancy',
+    isNewest = true,
+    isPopularity = true,
     language = 'en'
   ) {
     //if User logged in successfully
@@ -200,14 +200,16 @@ class User {
         [from, to] = timeRange,
         pageSize = this.#newsPerPage;
 
-      if (isPrecise) sortBy += ',relevancy';
+      if (!queryKey) return alert('Please enter some keywords!');
+
+      if (isNewest) sortBy += ',publishedAt';
       if (isPopularity) sortBy += ',popularity';
 
-      let page = this.#curSearchPage;
+      // let page = this.#curSearchPage;
+      let page = 0;
 
       return async function () {
         console.log(queryKey);
-        if (!queryKey) return alert('Please enter some keywords!');
 
         try {
           if (this.#prevCheck && page > 1) {
@@ -224,6 +226,11 @@ class User {
           );
           const lastPage = Math.ceil(dataNews.totalResults / pageSize);
           console.log(dataNews);
+          console.log(
+            `https://newsapi.org/v2/everything?q="+${queryKey}"&from=${from}&to=${to}&sortBy=${sortBy}&language=${language}&pageSize=${pageSize}&page=${page}&apiKey=${
+              this.#NEWS_API_KEY
+            }`
+          );
 
           this._renderNews(dataNews);
           this._updatePagination(page, lastPage);
