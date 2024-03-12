@@ -11,6 +11,7 @@ const inputPWDConfirm = document.querySelector('#input-password-confirm');
 const inputPageSize = document.querySelector('#input-page-size');
 const inputCategory = document.querySelector('#input-category');
 const inputTask = document.querySelector('#input-task');
+const inputQuery = document.querySelector('#input-query');
 
 const btnRegister = document.querySelector('#btn-submit');
 const btnLogin = document.querySelector('#btn-submit');

@@ -18,8 +18,8 @@ class User {
   #userOptions;
   #todoArr;
 
-  #curPage = 0;
-  #countryCode = 'us';
+  #curNewsPage = 0;
+  #curSearchPage = 0;
   #newsCategory;
   #newsPerPage;
 
@@ -52,9 +52,11 @@ class User {
       });
     };
 
-    this.#curPage = getLocalStorage(this.#KEY_LATEST_NEWS_PAGE)
+    this.#curNewsPage = getLocalStorage(this.#KEY_LATEST_NEWS_PAGE)
       ? getLocalStorage(this.#KEY_LATEST_NEWS_PAGE) - 1
       : 0; //(*this step can be omitted if wanted to load the page from start)
+
+    this.#curSearchPage = getLocalStorage(this.#KEY_LATEST_SEARCH_PAGE, 0);
 
     this.#userOptions = getLocalStorage(this.#KEY_USER_OPTIONS, []);
 
@@ -138,14 +140,13 @@ class User {
   }
 
   //[Public Methods/Interfaces]
-  getNews(isLoggedIn) {
+  getNews(isLoggedIn, countryCode = 'us') {
     //if User logged in successfully
     if (isLoggedIn) {
-      const countryCode = this.#countryCode,
-        category = this.#newsCategory,
+      const category = this.#newsCategory,
         pageSize = this.#newsPerPage;
 
-      let page = this.#curPage;
+      let page = this.#curNewsPage;
 
       return async function () {
         try {
@@ -179,16 +180,36 @@ class User {
     }
   }
 
-  getNewsByKey(isLoggedIn, keyWord) {
+  getNewsByKey(
+    isLoggedIn,
+    timeRange = (function () {
+      const now = new Date();
+      const yesterday = new Date(now);
+      yesterday.setDate(now.getDate() - 1);
+
+      return [yesterday.toISOString(), now.toISOString()];
+    })(),
+    sortBy = 'publishedAt',
+    isPrecise = 'false',
+    isPopularity = 'false',
+    language = 'en'
+  ) {
     //if User logged in successfully
     if (isLoggedIn) {
-      const countryCode = this.#countryCode,
-        category = this.#newsCategory,
+      const queryKey = inputQuery.value.trim().toLowerCase(),
+        [from, to] = timeRange,
         pageSize = this.#newsPerPage;
 
-      let page = this.#curPage;
+      if (isPrecise) sortBy += ',relevancy';
+      if (isPopularity) sortBy += ',popularity';
+
+      let page = this.#curSearchPage;
+
+      console.log(from, to);
 
       return async function () {
+        if (!inputQuery) return alert('Please enter some keywords!');
+
         try {
           if (this.#prevCheck && page > 1) {
             page--;
@@ -198,7 +219,7 @@ class User {
 
           const dataNews = await this._getReqData.call(
             this,
-            `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${page}&apiKey=${
+            `https://newsapi.org/v2/everything?q="${+queryKey}"&from=${from}&to=${to}&sortBy=${sortBy}&language=${language}&pageSize=${pageSize}&page=${page}&apiKey=${
               this.#NEWS_API_KEY
             }`
           );
@@ -222,6 +243,10 @@ class User {
 
   resetNewsPage() {
     setLocalStorage(this.#KEY_LATEST_NEWS_PAGE, 0);
+  }
+
+  resetSearchPage() {
+    setLocalStorage(this.#KEY_LATEST_SEARCH_PAGE, 0);
   }
 
   renderMainContent(isLoggedIn) {
