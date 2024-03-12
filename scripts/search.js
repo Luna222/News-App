@@ -19,8 +19,6 @@ const initSearch = function () {
     app.getCurUser().password
   );
 
-  reqSearchedNews = user.getNewsByKey(app.isLoggedIn());
-
   //Re-set News page to page 1
   user.resetNewsPage();
 };
@@ -30,8 +28,8 @@ initSearch();
  * Handle Events
  ******************************************************************************/
 btnSearch.addEventListener('click', function () {
-  const queryKey = inputQuery.value.trim().toLowerCase();
-  reqSearchedNews?.call(user, queryKey);
+  reqSearchedNews = user.getNewsByKey(app.isLoggedIn());
+  reqSearchedNews?.call(user);
 });
 
 /*
