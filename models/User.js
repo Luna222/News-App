@@ -7,7 +7,7 @@ class User {
   uId = `U${(Date.now() + '').slice(-10)}`;
 
   //Private fields on Instance
-  #NEWS_API_KEY = '7d972bf8adae4d349dc4e1f2a8b1b4a5';
+  #NEWS_API_KEY = 'a599b6a463cd412da2d30bbc8269a6b3';
   #KEY_LATEST_NEWS_PAGE = 'LATEST_NEWS_PAGE';
   #KEY_LATEST_SEARCH_PAGE = 'LATEST_SEARCH_PAGE';
   #KEY_USER_OPTIONS = 'USER_OPTIONS';
@@ -187,7 +187,7 @@ class User {
       const yesterday = new Date(now);
       yesterday.setDate(now.getDate() - 1);
 
-      return [yesterday.toISOString(), now.toISOString()];
+      return [yesterday, now]; //ISO date formats
     })(),
     sortBy = 'publishedAt',
     isPrecise = false,
@@ -196,19 +196,20 @@ class User {
   ) {
     //if User logged in successfully
     if (isLoggedIn) {
-      const queryKey = inputQuery.value.trim().toLowerCase(),
-        [from, to] = timeRange,
+      const [from, to] = timeRange,
         pageSize = this.#newsPerPage;
 
       if (isPrecise) sortBy += ',relevancy';
       if (isPopularity) sortBy += ',popularity';
 
-      let page = this.#curSearchPage;
+      // let page = this.#curSearchPage;
+      let page = 0;
 
       console.log(from, to);
 
-      return async function () {
-        if (!inputQuery.value) return alert('Please enter some keywords!');
+      return async function (queryKey) {
+        console.log(queryKey);
+        if (!queryKey) return alert('Please enter some keywords!');
 
         try {
           if (this.#prevCheck && page > 1) {
@@ -219,14 +220,14 @@ class User {
 
           const dataNews = await this._getReqData.call(
             this,
-            `https://newsapi.org/v2/everything?q="${+queryKey}"&from=${from}&to=${to}&sortBy=${sortBy}&language=${language}&pageSize=${pageSize}&page=${page}&apiKey=${
+            `https://newsapi.org/v2/everything?q="+${queryKey}"&from=${from}&to=${to}&sortBy=${sortBy}&language=${language}&pageSize=${pageSize}&page=${page}&apiKey=${
               this.#NEWS_API_KEY
             }`
           );
           const lastPage = Math.ceil(dataNews.totalResults / pageSize);
           console.log(dataNews);
           console.log(
-            `https://newsapi.org/v2/everything?q="${+queryKey}"&from=${from}&to=${to}&sortBy=${sortBy}&language=${language}&pageSize=${pageSize}&page=${page}&apiKey=${
+            `https://newsapi.org/v2/everything?q="+${queryKey}"&from=${from}&to=${to}&sortBy=${sortBy}&language=${language}&pageSize=${pageSize}&page=${page}&apiKey=${
               this.#NEWS_API_KEY
             }`
           );

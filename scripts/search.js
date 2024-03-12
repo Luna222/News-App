@@ -29,7 +29,10 @@ initSearch();
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/
-btnSearch.addEventListener('click', reqSearchedNews?.bind(user));
+btnSearch.addEventListener('click', function () {
+  const queryKey = inputQuery.value.trim().toLowerCase();
+  reqSearchedNews?.call(user, queryKey);
+});
 
 /*
 to navigate back n forth through the pages while rendering the corresponding data, I will use Closure behavior in JS
