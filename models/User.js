@@ -285,6 +285,9 @@ class User {
   resetSearchPage() {
     this.#curSearchPage = 0;
     setLocalStorage(this.#KEY_LATEST_SEARCH_PAGE, this.#curSearchPage);
+
+    localStorage.removeItem(this.#KEY_SEARCH_RESULTS);
+    localStorage.removeItem(this.#KEY_QUERY);
   }
 
   renderMainContent(isLoggedIn) {
