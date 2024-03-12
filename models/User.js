@@ -208,7 +208,7 @@ class User {
       console.log(from, to);
 
       return async function () {
-        if (!inputQuery) return alert('Please enter some keywords!');
+        if (!inputQuery.value) return alert('Please enter some keywords!');
 
         try {
           if (this.#prevCheck && page > 1) {
@@ -224,6 +224,12 @@ class User {
             }`
           );
           const lastPage = Math.ceil(dataNews.totalResults / pageSize);
+          console.log(dataNews);
+          console.log(
+            `https://newsapi.org/v2/everything?q="${+queryKey}"&from=${from}&to=${to}&sortBy=${sortBy}&language=${language}&pageSize=${pageSize}&page=${page}&apiKey=${
+              this.#NEWS_API_KEY
+            }`
+          );
 
           this._renderNews(dataNews);
           this._updatePagination(page, lastPage);
