@@ -213,7 +213,8 @@ class App {
   async logout(e) {
     e.preventDefault();
     localStorage.removeItem(this.#KEY_CURRENT_USER);
-    localStorage.removeItem(this.#currentUser.getKeyPage());
+    localStorage.removeItem(this.#currentUser.getKeyNewsPage());
+    localStorage.removeItem(this.#currentUser.getKeySearchPage());
     await this._redirectDir(1, '../pages/login.html');
   }
 

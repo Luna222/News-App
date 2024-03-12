@@ -8,7 +8,8 @@ class User {
 
   //Private fields on Instance
   #NEWS_API_KEY = '7d972bf8adae4d349dc4e1f2a8b1b4a5';
-  #KEY_LATEST_PAGE = 'LATEST_PAGE';
+  #KEY_LATEST_NEWS_PAGE = 'LATEST_NEWS_PAGE';
+  #KEY_LATEST_SEARCH_PAGE = 'LATEST_SEARCH_PAGE';
   #KEY_USER_OPTIONS = 'USER_OPTIONS';
   #KEY_TODO = 'USER_TODO';
 
@@ -51,8 +52,8 @@ class User {
       });
     };
 
-    this.#curPage = getLocalStorage(this.#KEY_LATEST_PAGE)
-      ? getLocalStorage(this.#KEY_LATEST_PAGE) - 1
+    this.#curPage = getLocalStorage(this.#KEY_LATEST_NEWS_PAGE)
+      ? getLocalStorage(this.#KEY_LATEST_NEWS_PAGE) - 1
       : 0; //(*this step can be omitted if wanted to load the page from start)
 
     this.#userOptions = getLocalStorage(this.#KEY_USER_OPTIONS, []);
@@ -165,7 +166,48 @@ class User {
           this._renderNews(dataNews);
           this._updatePagination(page, lastPage);
           //[OPTIONAL]: store the latest page User was left on for other purposes in the future
-          setLocalStorage(this.#KEY_LATEST_PAGE, page);
+          setLocalStorage(this.#KEY_LATEST_NEWS_PAGE, page);
+        } catch (err) {
+          console.error('Error occurred while fetching data 💥:', err.message);
+          //render error msg for User
+          this._renderError(
+            `Something went wrong 💥: ${err.message}. Please try again!`
+          );
+          throw err;
+        }
+      };
+    }
+  }
+
+  getNewsByKey(isLoggedIn, keyWord) {
+    //if User logged in successfully
+    if (isLoggedIn) {
+      const countryCode = this.#countryCode,
+        category = this.#newsCategory,
+        pageSize = this.#newsPerPage;
+
+      let page = this.#curPage;
+
+      return async function () {
+        try {
+          if (this.#prevCheck && page > 1) {
+            page--;
+          } else {
+            page++;
+          }
+
+          const dataNews = await this._getReqData.call(
+            this,
+            `https://newsapi.org/v2/top-headlines?country=${countryCode}&category=${category}&pageSize=${pageSize}&page=${page}&apiKey=${
+              this.#NEWS_API_KEY
+            }`
+          );
+          const lastPage = Math.ceil(dataNews.totalResults / pageSize);
+
+          this._renderNews(dataNews);
+          this._updatePagination(page, lastPage);
+          //[OPTIONAL]: store the latest page User was left on for other purposes in the future
+          setLocalStorage(this.#KEY_LATEST_SEARCH_PAGE, page);
         } catch (err) {
           console.error('Error occurred while fetching data 💥:', err.message);
           //render error msg for User
@@ -179,7 +221,7 @@ class User {
   }
 
   resetNewsPage() {
-    setLocalStorage(this.#KEY_LATEST_PAGE, 0);
+    setLocalStorage(this.#KEY_LATEST_NEWS_PAGE, 0);
   }
 
   renderMainContent(isLoggedIn) {
@@ -221,8 +263,12 @@ class User {
     alert('Settings saved!');
   }
 
-  getKeyPage() {
-    return this.#KEY_LATEST_PAGE;
+  getKeyNewsPage() {
+    return this.#KEY_LATEST_NEWS_PAGE;
+  }
+
+  getKeySearchPage() {
+    return this.#KEY_LATEST_SEARCH_PAGE;
   }
 
   renderTask() {
