@@ -19,12 +19,6 @@ class App {
   }
 
   //[Private Methods]
-  /**
-   *
-   * @param {Object} userData - user's data inputs from form
-   *
-   * @returns {Boolean}
-   */
   _isFilled(userData) {
     let check = true;
 

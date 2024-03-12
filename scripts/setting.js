@@ -33,4 +33,7 @@ initSetting();
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/
+/**
+ * @brief handle applying settings event
+ */
 btnSetting.addEventListener('click', user.applySettings.bind(user));

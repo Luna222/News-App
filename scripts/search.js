@@ -36,10 +36,16 @@ const initSearch = function () {
     );
 
     /*
-    to navigate back n forth through the pages while rendering the corresponding data, I will use Closure behavior in JS
+    to navigate back n forth through the pages while rendering the corresponding data, I will use Closure behavior in JS:
     */
+    /**
+     * @brief handle going forwards event
+     */
     btnNext.addEventListener('click', reqSearchedNews?.bind(user));
 
+    /**
+     * @brief handle going backwards event
+     */
     btnPrev.addEventListener('click', reqSearchedNews?.bind(user));
   }
 
@@ -56,9 +62,15 @@ btnSearch.addEventListener('click', function () {
   reqSearchedNews?.call(user);
 
   /*
-  to navigate back n forth through the pages while rendering the corresponding data, I will use Closure behavior in JS
+  to navigate back n forth through the pages while rendering the corresponding data, I will use Closure behavior in JS:
   */
+  /**
+   * @brief handle going forwards event
+   */
   btnNext.addEventListener('click', reqSearchedNews?.bind(user));
 
+  /**
+   * @brief handle going backwards event
+   */
   btnPrev.addEventListener('click', reqSearchedNews?.bind(user));
 });

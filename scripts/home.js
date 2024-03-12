@@ -31,4 +31,7 @@ initHome();
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/
+/**
+ * @brief handle logout event
+ */
 btnLogout.addEventListener('click', app.logout.bind(app));

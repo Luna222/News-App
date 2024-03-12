@@ -18,4 +18,7 @@ initLogin();
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/
+/**
+ * @brief handle login event
+ */
 btnLogin.addEventListener('click', app.login.bind(app));

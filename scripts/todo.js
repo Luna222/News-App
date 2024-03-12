@@ -33,6 +33,9 @@ initTodo();
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/
+/**
+ * @brief handle adding a new task event
+ */
 btnAdd.addEventListener('click', user.addTask.bind(user));
 
 /**

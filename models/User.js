@@ -1,4 +1,29 @@
 'use strict';
+/*
+  If the key mentioned didn't work, please try using these API keys instead:
+    8587c6d0458a45ac9efa366fa7af3e38
+    4bccceb37214454daf2826d22239acc3
+    4dd51b0084e446a088ca59f9d0e71704
+    21d234ad3ec146bdb7790483ff3de6f1
+    ea01a5192c68472b8df2af4c71d7c69e
+    27f7a70e82804ca1b245f503d077c41c
+    d5dea81a198e49228dcffe425660b4bd
+    6bf57f4de35e49c9942957a53b954be3
+    3293d62e9a0a4071a673a0b9cddb4f13
+    f4af91f34d284da9b6ff60b1c3f0c618
+    ad6e00964d7f4483aa25e3245057cfe1
+    d6f248ef71f949e997300fc6e6b47b0f
+    38cb4b200b12486a9ce28886475dfd2e
+    3e6b70cc46c1492c8b12217503232bb4
+    9aeafc405db44995a09f64d5f6e86817
+    c2e042b86fca4279b7114b211453552f
+    d13672e23a6d4f91a2193dea4e26bce2
+    6cb8912cafe340d8896cfbfd4d397f7e
+    c64c16c9e5c14a3784dd6c74cbe0fbe9
+    7e343ddb68284bf3a8e019830dcf5308
+    6dcf61c2271548e2a3b9b48dfc2d7f01
+    938611a60e6c4f67928105d72b25f7f8
+  */
 
 ///////////////////////////////////////
 // USER

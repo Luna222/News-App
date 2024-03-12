@@ -75,8 +75,8 @@ const matchPasswords = async function (enteredPwd, hashedPwd) {
 /**
  * @brief check characters included in the query input
  *
- * @param {String} data - Pet data
- * @param {String} query - query input from form
+ * @param {String} data
+ * @param {String} query
  *
  * @returns {Boolean} - returns `true` if there is a match, and `false` otherwise
  */
@@ -110,7 +110,7 @@ function checkNumCharacter(text) {
 
 /**
  *
- * @returns
+ * @returns {Boolean}
  */
 const isSupported = function () {
   return typeof Storage !== 'undefined';
@@ -118,7 +118,7 @@ const isSupported = function () {
 
 /**
  *
- * @param {*} key
+ * @param {String} key
  * @param {*} value
  */
 const setLocalStorage = function (key, value) {
@@ -129,7 +129,7 @@ const setLocalStorage = function (key, value) {
 
 /**
  *
- * @param {*} key
+ * @param {String} key
  * @param {*} defaultVal
  *
  * @returns
@@ -170,7 +170,7 @@ const getUserLocalStorage = function (key, defaultVal = '') {
 
 /**
  *
- * @param {*} key
+ * @param {String} key
  * @param {*} defaultVal
  *
  * @returns

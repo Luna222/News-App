@@ -22,4 +22,7 @@ initRegister();
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/
+/**
+ * @brief handle register event
+ */
 btnRegister.addEventListener('click', app.newUser.bind(app));
