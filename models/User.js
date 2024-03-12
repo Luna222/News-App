@@ -1,7 +1,6 @@
 'use strict';
 /*
-  If the key mentioned didn't work, please try using these API keys instead:
-    8587c6d0458a45ac9efa366fa7af3e38
+  If the key mentioned didn't work, please try using these API keys instead: 
     4bccceb37214454daf2826d22239acc3
     4dd51b0084e446a088ca59f9d0e71704
     21d234ad3ec146bdb7790483ff3de6f1
@@ -32,7 +31,7 @@ class User {
   uId = `U${(Date.now() + '').slice(-10)}`;
 
   //Private fields on Instance
-  #NEWS_API_KEY = 'bd91eb92768847649f4dc6406b0d578e';
+  #NEWS_API_KEY = '8587c6d0458a45ac9efa366fa7af3e38';
   #KEY_LATEST_NEWS_PAGE = 'LATEST_NEWS_PAGE';
   #KEY_LATEST_SEARCH_PAGE = 'LATEST_SEARCH_PAGE';
   #KEY_USER_OPTIONS = 'USER_OPTIONS';
