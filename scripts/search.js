@@ -20,7 +20,14 @@ const initSearch = function () {
   );
 
   //render results page where User left on
-  // if (user.getSearchPage() > 0) user.renderNews(user.getSearchRsl());
+  if (user.getSearchPage() > 0) {
+    user.renderNews(user.getSearchRsl());
+
+    user.updatePagination(
+      user.getSearchPage(),
+      user.getSearchRsl().totalResults / user.getPageSize()
+    );
+  }
 
   //Re-set News page to page 0
   user.resetNewsPage();

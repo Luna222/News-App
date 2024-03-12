@@ -93,17 +93,6 @@ class User {
     newsContainer.insertAdjacentText('afterbegin', errMsg);
   }
 
-  _updatePagination = function (curPage, lastPage) {
-    pageNum.textContent = curPage;
-    curPage === 1
-      ? (btnPrev.style.display = 'none')
-      : (btnPrev.style.display = 'block');
-
-    curPage >= lastPage
-      ? (btnNext.style.display = 'none')
-      : (btnNext.style.display = 'block');
-  };
-
   async _getReqData(endpointUrl) {
     const resData = await fetch(endpointUrl);
 
@@ -138,7 +127,7 @@ class User {
           const lastPage = Math.ceil(dataNews.totalResults / pageSize);
 
           this.renderNews(dataNews);
-          this._updatePagination(page, lastPage);
+          this.updatePagination(page, lastPage);
           //[OPTIONAL]: store the latest page User was left on for other purposes in the future
           setLocalStorage(this.#KEY_LATEST_NEWS_PAGE, page);
         } catch (err) {
@@ -204,7 +193,7 @@ class User {
           );
 
           this.renderNews(dataNews);
-          this._updatePagination(page, lastPage);
+          this.updatePagination(page, lastPage);
           //[OPTIONAL]: store the latest page User was left on for other purposes in the future
           this.#curSearchPage = page;
           setLocalStorage(this.#KEY_LATEST_SEARCH_PAGE, page);
@@ -253,6 +242,17 @@ class User {
     });
   }
 
+  updatePagination = function (curPage, lastPage) {
+    pageNum.textContent = curPage;
+    curPage === 1
+      ? (btnPrev.style.display = 'none')
+      : (btnPrev.style.display = 'block');
+
+    curPage >= lastPage
+      ? (btnNext.style.display = 'none')
+      : (btnNext.style.display = 'block');
+  };
+
   resetNewsPage() {
     setLocalStorage(this.#KEY_LATEST_NEWS_PAGE, 0);
   }
@@ -298,6 +298,10 @@ class User {
     });
     setLocalStorage(this.#KEY_USER_OPTIONS, this.#userOptions);
     alert('Settings saved!');
+  }
+
+  getPageSize() {
+    return this.#newsPerPage;
   }
 
   getKeyNewsPage() {
