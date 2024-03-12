@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-let app, user, reqSearchedNews;
+let app, user;
 
 /*******************************************************************************
  * Functions
@@ -19,7 +19,10 @@ const initSearch = function () {
     app.getCurUser().password
   );
 
-  //Re-set News page to page 1
+  //render results page where User left on
+  // if (user.getSearchPage() > 0) user.renderNews(user.getSearchRsl());
+
+  //Re-set News page to page 0
   user.resetNewsPage();
 };
 initSearch();
@@ -28,19 +31,13 @@ initSearch();
  * Handle Events
  ******************************************************************************/
 btnSearch.addEventListener('click', function () {
-  reqSearchedNews = user.getNewsByKey(app.isLoggedIn());
+  const reqSearchedNews = user.getNewsByKey(app.isLoggedIn());
   reqSearchedNews?.call(user);
+
+  /*
+  to navigate back n forth through the pages while rendering the corresponding data, I will use Closure behavior in JS
+  */
+  btnNext.addEventListener('click', reqSearchedNews?.bind(user));
+
+  btnPrev.addEventListener('click', reqSearchedNews?.bind(user));
 });
-
-/*
-to navigate back n forth through the pages while rendering the corresponding data, I will use Closure behavior in JS
-*/
-/**
- *
- */
-btnNext.addEventListener('click', reqSearchedNews?.bind(user));
-
-/**
- *
- */
-btnPrev.addEventListener('click', reqSearchedNews?.bind(user));

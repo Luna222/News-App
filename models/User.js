@@ -7,17 +7,19 @@ class User {
   uId = `U${(Date.now() + '').slice(-10)}`;
 
   //Private fields on Instance
-  #NEWS_API_KEY = 'a599b6a463cd412da2d30bbc8269a6b3';
+  #NEWS_API_KEY = 'bd91eb92768847649f4dc6406b0d578e';
   #KEY_LATEST_NEWS_PAGE = 'LATEST_NEWS_PAGE';
   #KEY_LATEST_SEARCH_PAGE = 'LATEST_SEARCH_PAGE';
   #KEY_USER_OPTIONS = 'USER_OPTIONS';
   #KEY_TODO = 'USER_TODO';
+  #KEY_SEARCH_RESULTS = 'SEARCH_RESULT';
 
   #prevCheck = false;
   #nextCheck = false;
   #userOptions;
   #todoArr;
 
+  #searchResult;
   #curNewsPage = 0;
   #curSearchPage = 0;
   #newsCategory;
@@ -73,6 +75,8 @@ class User {
       : 'general';
 
     this.#todoArr = parseTask(getLocalStorage(this.#KEY_TODO, []));
+
+    this.#searchResult = getLocalStorage(this.#KEY_SEARCH_RESULTS, []);
   }
 
   _isPrev() {
@@ -87,36 +91,6 @@ class User {
 
   _renderError(errMsg) {
     newsContainer.insertAdjacentText('afterbegin', errMsg);
-  }
-
-  _renderNews(data) {
-    Array.from(newsContainer.children).forEach(article => article.remove());
-
-    data.articles.forEach(article => {
-      const { urlToImage, title, description, url } = article;
-
-      const htmlArticle = `<div class="card flex-row flex-wrap">
-        <div class="card mb-3" style="">
-          <div class="row no-gutters">
-            <div class="col-md-4">
-              <img src="${urlToImage}" class="card-img" alt="${title}">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">
-                  ${title}
-                </h5>
-                <p class="card-text">
-                  ${description}
-                </p>
-                <a href="${url}" class="btn btn-primary">View</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>`;
-      newsContainer.insertAdjacentHTML('beforeend', htmlArticle);
-    });
   }
 
   _updatePagination = function (curPage, lastPage) {
@@ -147,7 +121,6 @@ class User {
         pageSize = this.#newsPerPage;
 
       let page = this.#curNewsPage;
-
       return async function () {
         try {
           if (this.#prevCheck && page > 1) {
@@ -164,7 +137,7 @@ class User {
           );
           const lastPage = Math.ceil(dataNews.totalResults / pageSize);
 
-          this._renderNews(dataNews);
+          this.renderNews(dataNews);
           this._updatePagination(page, lastPage);
           //[OPTIONAL]: store the latest page User was left on for other purposes in the future
           setLocalStorage(this.#KEY_LATEST_NEWS_PAGE, page);
@@ -205,9 +178,7 @@ class User {
       if (isNewest) sortBy += ',publishedAt';
       if (isPopularity) sortBy += ',popularity';
 
-      // let page = this.#curSearchPage;
       let page = 0;
-
       return async function () {
         console.log(queryKey);
 
@@ -232,10 +203,14 @@ class User {
             }`
           );
 
-          this._renderNews(dataNews);
+          this.renderNews(dataNews);
           this._updatePagination(page, lastPage);
           //[OPTIONAL]: store the latest page User was left on for other purposes in the future
+          this.#curSearchPage = page;
           setLocalStorage(this.#KEY_LATEST_SEARCH_PAGE, page);
+
+          this.#searchResult = dataNews;
+          setLocalStorage(this.#KEY_SEARCH_RESULTS, dataNews);
         } catch (err) {
           console.error('Error occurred while fetching data 💥:', err.message);
           //render error msg for User
@@ -246,6 +221,36 @@ class User {
         }
       };
     }
+  }
+
+  renderNews(data) {
+    Array.from(newsContainer.children).forEach(article => article.remove());
+
+    data.articles.forEach(article => {
+      const { urlToImage, title, description, url } = article;
+
+      const htmlArticle = `<div class="card flex-row flex-wrap">
+        <div class="card mb-3" style="">
+          <div class="row no-gutters">
+            <div class="col-md-4">
+              <img src="${urlToImage}" class="card-img" alt="${title}">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">
+                  ${title}
+                </h5>
+                <p class="card-text">
+                  ${description}
+                </p>
+                <a href="${url}" class="btn btn-primary">View</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+      newsContainer.insertAdjacentHTML('beforeend', htmlArticle);
+    });
   }
 
   resetNewsPage() {
@@ -301,6 +306,14 @@ class User {
 
   getKeySearchPage() {
     return this.#KEY_LATEST_SEARCH_PAGE;
+  }
+
+  getSearchRsl() {
+    return this.#searchResult;
+  }
+
+  getSearchPage() {
+    return this.#curSearchPage;
   }
 
   renderTask() {
