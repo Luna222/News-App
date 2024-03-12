@@ -190,8 +190,8 @@ class User {
       return [yesterday.toISOString(), now.toISOString()];
     })(),
     sortBy = 'publishedAt',
-    isPrecise = 'false',
-    isPopularity = 'false',
+    isPrecise = false,
+    isPopularity = false,
     language = 'en'
   ) {
     //if User logged in successfully
