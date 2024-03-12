@@ -188,11 +188,6 @@ class User {
             }`
           );
           const lastPage = Math.ceil(dataNews.totalResults / pageSize);
-          console.log(
-            `https://newsapi.org/v2/everything?q="+${queryKey}"&from=${from}&to=${to}&sortBy=${sortBy}&language=${language}&pageSize=${pageSize}&page=${page}&apiKey=${
-              this.#NEWS_API_KEY
-            }`
-          );
 
           this.renderNews(dataNews);
           this.updatePagination(page, lastPage);
