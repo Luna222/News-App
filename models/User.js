@@ -31,22 +31,17 @@ class User {
   uId = `U${(Date.now() + '').slice(-10)}`;
 
   //Private fields on Instance
-  #NEWS_API_KEY = '8587c6d0458a45ac9efa366fa7af3e38';
+  #NEWS_API_KEY = '3e6b70cc46c1492c8b12217503232bb4';
   #KEY_LATEST_NEWS_PAGE = 'LATEST_NEWS_PAGE';
   #KEY_LATEST_SEARCH_PAGE = 'LATEST_SEARCH_PAGE';
   #KEY_USER_OPTIONS = 'USER_OPTIONS';
   #KEY_TODO = 'USER_TODO';
-  #KEY_SEARCH_RESULTS = 'SEARCH_RESULT';
-  #KEY_QUERY = 'QUERY';
+  #KEY_CUR_QUERY = 'CUR_QUERY';
 
   #prevCheck = false;
   #nextCheck = false;
   #userOptions;
   #todoArr;
-
-  #curSearchPage = 0;
-  #queryKey;
-  #searchResult;
 
   #curNewsPage = 0;
   #newsCategory;
@@ -85,8 +80,6 @@ class User {
       ? getLocalStorage(this.#KEY_LATEST_NEWS_PAGE) - 1
       : 0; //(*this step can be omitted if wanted to load the page from start)
 
-    this.#curSearchPage = getLocalStorage(this.#KEY_LATEST_SEARCH_PAGE, 0);
-
     this.#userOptions = getLocalStorage(this.#KEY_USER_OPTIONS, []);
 
     const curUserOption = this.#userOptions.find(
@@ -102,10 +95,6 @@ class User {
       : 'general';
 
     this.#todoArr = parseTask(getLocalStorage(this.#KEY_TODO, []));
-
-    this.#searchResult = getLocalStorage(this.#KEY_SEARCH_RESULTS, []);
-
-    this.#queryKey = getLocalStorage(this.#KEY_QUERY, []);
   }
 
   _isPrev() {
@@ -174,6 +163,7 @@ class User {
   getNewsByKey(
     isLoggedIn,
     page = 0,
+    queryKey,
     timeRange = (function () {
       const now = new Date();
       const yesterday = new Date(now);
@@ -188,17 +178,18 @@ class User {
   ) {
     //if User logged in successfully
     if (isLoggedIn) {
-      const queryKey = inputQuery.value.trim().toLowerCase(),
-        [from, to] = timeRange,
+      const [from, to] = timeRange,
         pageSize = this.#newsPerPage;
-
-      if (!queryKey) return alert('Please enter some keywords!');
 
       if (isNewest) sortBy += ',publishedAt';
       if (isPopularity) sortBy += ',popularity';
 
+      setLocalStorage(this.#KEY_CUR_QUERY, queryKey);
+
       return async function () {
         try {
+          queryKey = getLocalStorage(this.#KEY_CUR_QUERY);
+
           if (this.#prevCheck && page > 1) {
             page--;
           } else {
@@ -215,15 +206,8 @@ class User {
 
           this.renderNews(dataNews);
           this.updatePagination(page, lastPage);
-          //[OPTIONAL]: store the latest page User was left on for other purposes in the future
-          this.#curSearchPage = page;
+          //[OPTIONAL]: store the latest page User was left on
           setLocalStorage(this.#KEY_LATEST_SEARCH_PAGE, page);
-
-          this.#searchResult = dataNews;
-          setLocalStorage(this.#KEY_SEARCH_RESULTS, dataNews);
-
-          this.#queryKey = queryKey;
-          setLocalStorage(this.#KEY_QUERY, queryKey);
         } catch (err) {
           console.error('Error occurred while fetching data 💥:', err.message);
           //render error msg for User
@@ -278,16 +262,12 @@ class User {
   };
 
   resetNewsPage() {
-    this.#curNewsPage = 0;
-    setLocalStorage(this.#KEY_LATEST_NEWS_PAGE, this.#curNewsPage);
+    setLocalStorage(this.#KEY_LATEST_NEWS_PAGE, 0);
   }
 
   resetSearchPage() {
-    this.#curSearchPage = 0;
-    setLocalStorage(this.#KEY_LATEST_SEARCH_PAGE, this.#curSearchPage);
-
-    localStorage.removeItem(this.#KEY_SEARCH_RESULTS);
-    localStorage.removeItem(this.#KEY_QUERY);
+    setLocalStorage(this.#KEY_LATEST_SEARCH_PAGE, 0);
+    localStorage.removeItem(this.#KEY_CUR_QUERY);
   }
 
   renderMainContent(isLoggedIn) {
@@ -329,10 +309,6 @@ class User {
     alert('Settings saved!');
   }
 
-  getPageSize() {
-    return this.#newsPerPage;
-  }
-
   getKeyNewsPage() {
     return this.#KEY_LATEST_NEWS_PAGE;
   }
@@ -341,16 +317,12 @@ class User {
     return this.#KEY_LATEST_SEARCH_PAGE;
   }
 
-  getQueryKey() {
-    return this.#queryKey;
-  }
-
-  getSearchRsl() {
-    return this.#searchResult;
+  getCurQueryKey() {
+    return getLocalStorage(this.#KEY_CUR_QUERY);
   }
 
   getSearchPage() {
-    return this.#curSearchPage;
+    return getLocalStorage(this.#KEY_LATEST_SEARCH_PAGE);
   }
 
   renderTask() {

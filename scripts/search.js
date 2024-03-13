@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-let app, user;
+let app, user, queryKey;
 
 /*******************************************************************************
  * Functions
@@ -10,7 +10,7 @@ let app, user;
 /**
  * @brief initialize default state
  */
-const initSearch = function () {
+const initSearch = async function () {
   app = new App();
   user = new User(
     app.getCurUser().firstName,
@@ -20,33 +20,15 @@ const initSearch = function () {
   );
 
   //render results page where User left on
-  if (user.getSearchPage() > 0) {
-    inputQuery.value = user.getQueryKey();
-
-    user.renderNews(user.getSearchRsl());
-
-    user.updatePagination(
-      user.getSearchPage(),
-      Math.ceil(user.getSearchRsl().totalResults / user.getPageSize())
-    );
+  if (user.getSearchPage() >= 1) {
+    queryKey = user.getCurQueryKey();
 
     const reqSearchedNews = user.getNewsByKey(
       app.isLoggedIn(),
-      user.getSearchPage()
+      user.getSearchPage() - 1,
+      queryKey
     );
-
-    /*
-    to navigate back n forth through the pages while rendering the corresponding data, I will use Closure behavior in JS:
-    */
-    /**
-     * @brief handle going forwards event
-     */
-    btnNext.addEventListener('click', reqSearchedNews?.bind(user));
-
-    /**
-     * @brief handle going backwards event
-     */
-    btnPrev.addEventListener('click', reqSearchedNews?.bind(user));
+    reqSearchedNews?.call(user);
   }
 
   //Re-set News page to page 0
@@ -57,20 +39,47 @@ initSearch();
 /*******************************************************************************
  * Handle Events
  ******************************************************************************/
-btnSearch.addEventListener('click', function () {
-  const reqSearchedNews = user.getNewsByKey(app.isLoggedIn());
+/**
+ * @brief handle searching event
+ */
+btnSearch.addEventListener('click', async function () {
+  queryKey = inputQuery.value.trim().toLowerCase();
+
+  if (!queryKey) {
+    queryKey = user.getCurQueryKey();
+    inputQuery.value = user.getCurQueryKey();
+    return alert('Please enter some keywords!');
+  }
+
+  if (queryKey) user.resetSearchPage();
+
+  const reqSearchedNews = user.getNewsByKey(app.isLoggedIn(), 0, queryKey);
   reqSearchedNews?.call(user);
+});
 
-  /*
-  to navigate back n forth through the pages while rendering the corresponding data, I will use Closure behavior in JS:
-  */
-  /**
-   * @brief handle going forwards event
-   */
-  btnNext.addEventListener('click', reqSearchedNews?.bind(user));
+/*
+to navigate back n forth through the pages while rendering the corresponding data, I will use Closure behavior in JS:
+*/
+/**
+ * @brief handle going forwards event
+ */
+btnNext.addEventListener('click', function () {
+  const reqSearchedNews = user.getNewsByKey(
+    app.isLoggedIn(),
+    user.getSearchPage(),
+    queryKey
+  );
+  reqSearchedNews?.call(user);
+});
 
-  /**
-   * @brief handle going backwards event
-   */
-  btnPrev.addEventListener('click', reqSearchedNews?.bind(user));
+/**
+ * @brief handle going backwards event
+ */
+btnPrev.addEventListener('click', function () {
+  const reqSearchedNews = user.getNewsByKey(
+    app.isLoggedIn(),
+    user.getSearchPage(),
+    queryKey
+  );
+  reqSearchedNews?.call(user);
 });
