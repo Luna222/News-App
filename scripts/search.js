@@ -10,7 +10,7 @@ let app, user, queryKey;
 /**
  * @brief initialize default state
  */
-const initSearch = async function () {
+const initSearch = function () {
   app = new App();
   user = new User(
     app.getCurUser().firstName,
@@ -42,7 +42,7 @@ initSearch();
 /**
  * @brief handle searching event
  */
-btnSearch.addEventListener('click', async function () {
+btnSearch.addEventListener('click', function () {
   queryKey = inputQuery.value.trim().toLowerCase();
 
   if (!queryKey) {
