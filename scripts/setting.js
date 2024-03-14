@@ -22,7 +22,7 @@ const initSetting = function () {
   //Retrieve current Settings of the logged-in User as loading the page, shown in the form
   user.loadSettings(app.isLoggedIn());
 
-  //Re-set News page to page 1
+  //Re-set News page to page 0
   user.resetNewsPage();
 
   //clear results on Search page
